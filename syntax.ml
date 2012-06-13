@@ -11,6 +11,8 @@ type chunk =
     | Doc       of string
     | Code      of string * code list
 
+type doc = chunk list
+
 type t = 
     { code:     (code list) SM.t
     ; chunks:   chunk list
