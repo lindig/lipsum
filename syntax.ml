@@ -37,7 +37,8 @@ let index chunks =
                                 ; chunks = c::t.chunks
                                 }
     in
-        List.fold_left add empty chunks
+    let t = List.fold_left add empty chunks in
+        { t with chunks = List.rev t.chunks}
 
 
 let code = function
