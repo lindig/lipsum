@@ -13,7 +13,7 @@ module S = Syntax
 %% /* rules below */
 
 litprog     : /**/ chunks EOF               {List.rev $1}
-            | STR  chunks EOF               {List.rev (S.Doc($1)::$2)}
+            | STR  chunks EOF               {S.Doc($1) :: List.rev $2}
             ;
 
 chunks      : chunks chunk                  {$2::$1}
