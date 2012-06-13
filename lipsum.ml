@@ -22,12 +22,21 @@ let scan file =
         ; close_in f
         )
 
+let parse file =
+    let f       = open_in file in
+    let lexbuf  = Lexing.from_channel f in
+    let ast     = P.litprog S.token' lexbuf in
+    let doc     = Syntax.index ast in
+        ( Syntax.print doc
+        ; close_in f
+        )
+        
 let main () =
     let argv    = Array.to_list Sys.argv in
     let this    = Filename.basename (List.hd argv) in
     let args    = List.tl argv in
         match args with
-        | [file] -> scan file
+        | [file] -> parse file
         | []     -> error "%s: missing filename" this
         | _::_   -> error "%s: too many file names" this
 
