@@ -38,14 +38,14 @@ rule token str = parse
                                     return x str 
                                 }
     | "@ "                      { if col0 lexbuf                   
-                                  then return P.AT str               
+                                  then return (P.AT "@ ") str               
                                   else  ( B.add_char str '@'       
                                         ; token str lexbuf         
                                         )                          
                                 }                                 
     | "@\n"                     { new_line lexbuf;
                                   if col0 lexbuf                   
-                                  then return P.AT str               
+                                  then return (P.AT "@\n") str               
                                   else  ( B.add_string str (get lexbuf)
                                         ; token str lexbuf         
                                         )                          
@@ -86,7 +86,7 @@ let to_string = function
     | P.EOF         -> "+ eof"  
     | P.DEF(s)      -> Printf.sprintf "+ <<%s>>=" s
     | P.REF(s)      -> Printf.sprintf "+ <<%s>>" s
-    | P.AT          -> "+ @"
+    | P.AT(s)       -> Printf.sprintf "+ %s" s
     | P.STR(s)      -> "|"^s^"|"
 
 
