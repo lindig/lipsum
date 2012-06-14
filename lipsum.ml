@@ -30,15 +30,24 @@ let parse file =
         ( Syntax.print doc
         ; close_in f
         )
-        
+
+let help this =
+    ( eprintf "%s scan file.lp\n" this
+    ; eprintf "%s parse file.lp\n" this
+    ; exit 1
+    )  
+      
 let main () =
     let argv    = Array.to_list Sys.argv in
     let this    = Filename.basename (List.hd argv) in
     let args    = List.tl argv in
         match args with
-        | [file] -> parse file
-        | []     -> error "%s: missing filename" this
-        | _::_   -> error "%s: too many file names" this
+        | "scan" ::file::[]     -> scan file
+        | "parse"::file::[]     -> parse file
+        | "help"::_             -> help this
+        | "-help"::_            -> help this
+        | []                    -> help this
+        | _                     -> help this
 
 
 let () = 
