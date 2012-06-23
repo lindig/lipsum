@@ -70,7 +70,7 @@ let main () =
         | "scan" ::[]           -> process scan   None
         | "parse"::[]           -> process parse  None
         | "expand"::s::file::[] -> process (expand s) (Some file)
-        | "chunks"::s::file::[] -> process chunks (Some file)
+        | "chunks"::file::[]    -> process chunks (Some file)
         
         | "help"::_             -> help this
         | "-help"::_            -> help this
