@@ -29,7 +29,7 @@ let empty =
 
 let add key v map =
     if SM.mem key map
-    then SM.add key (v@(SM.find key map)) map
+    then SM.add key ((SM.find key map)@v) map
     else SM.add key v map
 
 let index chunks =
