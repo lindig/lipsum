@@ -32,29 +32,24 @@
 rule token str = parse
       eof                       { return P.EOF str     }
     | "@<<"                     { B.add_string str "<<" ; token str lexbuf }
-    | "@>>"                     { B.add_string str ">>" ; token str lexbuf }
-    | "@>>="                    { B.add_string str ">>="; token str lexbuf }
     | "<<"                      { let x   = name (Buffer.create 40) lexbuf in
                                     return x str 
                                 }
     | "@ "                      { if col0 lexbuf                   
-                                  then return (P.AT "@ ") str               
+                                  then return P.AT str               
                                   else  ( B.add_char str '@'       
                                         ; token str lexbuf         
                                         )                          
                                 }                                 
     | "@\n"                     { new_line lexbuf;
                                   if col0 lexbuf                   
-                                  then return (P.AT "@\n") str               
+                                  then return P.AT str               
                                   else  ( B.add_string str (get lexbuf)
                                         ; token str lexbuf         
                                         )                          
                                 }                                 
     | "@@"                      { B.add_char str '@'     ; token str lexbuf }
-    | "@@>>"                    { B.add_string str "@>>" ; token str lexbuf }
     | "@@<<"                    { B.add_string str "@<<" ; token str lexbuf }
-    | "@@>>="                   { B.add_string str "@>>="; token str lexbuf }
-
     | '\n'                      { new_line lexbuf                  
                                 ; B.add_char str '\n'              
                                 ; token str lexbuf                 
@@ -72,7 +67,6 @@ and name str = parse
     | "@@>>"                    { B.add_string str "@>>" ; name str lexbuf }
     | "@@<<"                    { B.add_string str "@<<" ; name str lexbuf }
     | "@@>>="                   { B.add_string str "@>>="; name str lexbuf }
-    
     | ">>"                      { P.REF (B.contents str) }
     | ">>="                     { P.DEF (B.contents str) }
     | _                         { B.add_char str (getchar lexbuf 0)
@@ -86,7 +80,7 @@ let to_string = function
     | P.EOF         -> "+ eof"  
     | P.DEF(s)      -> Printf.sprintf "+ <<%s>>=" s
     | P.REF(s)      -> Printf.sprintf "+ <<%s>>" s
-    | P.AT(s)       -> Printf.sprintf "+ %s" s
+    | P.AT          -> "+ @ "
     | P.STR(s)      -> "|"^s^"|"
 
 
