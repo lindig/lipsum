@@ -17,7 +17,6 @@ let process f = function
             )
     | None -> f stdin
             
-
 let scan io =
     let lexbuf  = Lexing.from_channel io in
     let rec loop lexbuf =
@@ -28,6 +27,10 @@ let scan io =
                   )
     in
         loop lexbuf
+
+let escape io =
+    let lexbuf = Lexing.from_channel io in
+        Escape.escape stdout lexbuf
 
 let doc io =
     let lexbuf  = Lexing.from_channel io in
@@ -71,6 +74,7 @@ let main () =
         | "parse"::[]           -> process parse  None
         | "expand"::s::file::[] -> process (expand s) (Some file)
         | "chunks"::file::[]    -> process chunks (Some file)
+        | "escape"::file::[]    -> process escape (Some file)
         
         | "help"::_             -> help this
         | "-help"::_            -> help this
