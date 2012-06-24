@@ -6,7 +6,7 @@ OCB 	= ocamlbuild -yaccflag -v
 TARGET  = lipsum
 
 
-all:	byte
+all:	byte native
 
 native:
 	$(OCB) $(TARGET).native
