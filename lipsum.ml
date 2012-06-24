@@ -55,9 +55,7 @@ let expand chunk io =
     print_chunk chunk @@ doc io
 
 let chunks io =
-    let d = doc io in
-    let print key v = print_endline key in
-        LP.SM.iter print d.LP.code
+    List.iter print_endline @@ LP.code_chunks @@ doc io
 
 let help this =
     ( eprintf "%s scan [file.lp]\n" this
