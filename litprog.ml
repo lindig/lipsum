@@ -54,8 +54,17 @@ let code_chunks t =
 
 let code_roots t = 
     let add name _ names = SS.add name names in
-    let chunks = SM.fold add t.code SS.empty in
-    chunks
+    let roots = SM.fold add t.code SS.empty in
+    let rec traverse_chunk roots = function
+        | Doc(_)       -> roots
+        | Code(_,code) -> List.fold_left traverse_code roots code 
+    and traverse_code roots = function
+        | Str(_)    -> roots
+        | Sync(_)   -> roots
+        | Ref(n)    -> SS.remove n roots
+    in
+        SS.elements @@ List.fold_left traverse_chunk roots t.chunks
+    
 
 (* Just for debugging during development
  *)

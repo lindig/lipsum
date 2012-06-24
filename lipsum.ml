@@ -57,6 +57,9 @@ let expand chunk io =
 let chunks io =
     List.iter print_endline @@ LP.code_chunks @@ doc io
 
+let roots io =
+    List.iter print_endline @@ LP.code_roots @@ doc io
+
 let help this =
     ( eprintf "%s scan [file.lp]\n" this
     ; eprintf "%s parse [file.lp]\n" this
@@ -74,6 +77,7 @@ let main () =
         | "parse"::[]           -> process parse  None
         | "expand"::s::file::[] -> process (expand s) (Some file)
         | "chunks"::file::[]    -> process chunks (Some file)
+        | "roots"::file::[]     -> process roots (Some file)
         | "escape"::file::[]    -> process escape (Some file)
         
         | "help"::_             -> help this
