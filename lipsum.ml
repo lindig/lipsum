@@ -1,6 +1,7 @@
 
-module S = Scanner
-module P = Parser
+module S  = Scanner
+module P  = Parser
+module LP = Litprog
 
 exception Error of string
 let error fmt = Printf.kprintf (fun msg -> raise (Error msg)) fmt
@@ -35,20 +36,20 @@ let escape io =
 let doc io =
     let lexbuf  = Lexing.from_channel io in
     let ast     = P.litprog S.token' lexbuf in
-        Syntax.index ast
+        LP.index ast
         
 
 let parse io =
-    Syntax.print @@ doc io
+    LP.print @@ doc io
 
 
 let print_chunk chunk doc =
     let rec loop = function
-        | Syntax.Str(s)  -> print_string s
-        | Syntax.Ref(s)  -> List.iter loop (Syntax.SM.find s doc.Syntax.code)
-        | Syntax.Sync(p) -> printf "# %d \"%s\"\n" p.Syntax.line p.Syntax.file
+        | LP.Str(s)  -> print_string s
+        | LP.Ref(s)  -> List.iter loop (LP.SM.find s doc.LP.code)
+        | LP.Sync(p) -> printf "# %d \"%s\"\n" p.LP.line p.LP.file
     in
-        List.iter loop (Syntax.SM.find chunk doc.Syntax.code)
+        List.iter loop (LP.SM.find chunk doc.LP.code)
 
 let expand chunk io =
     print_chunk chunk @@ doc io
@@ -56,7 +57,7 @@ let expand chunk io =
 let chunks io =
     let d = doc io in
     let print key v = print_endline key in
-        Syntax.SM.iter print d.Syntax.code
+        LP.SM.iter print d.LP.code
 
 let help this =
     ( eprintf "%s scan [file.lp]\n" this
