@@ -44,8 +44,9 @@ let parse io =
 
 let print_chunk chunk doc =
     let rec loop = function
-        | Syntax.Str(s) -> print_string s
-        | Syntax.Ref(s) -> List.iter loop (Syntax.SM.find s doc.Syntax.code)
+        | Syntax.Str(s)  -> print_string s
+        | Syntax.Ref(s)  -> List.iter loop (Syntax.SM.find s doc.Syntax.code)
+        | Syntax.Sync(p) -> printf "# %d \"%s\"\n" p.Syntax.line p.Syntax.file
     in
         List.iter loop (Syntax.SM.find chunk doc.Syntax.code)
 

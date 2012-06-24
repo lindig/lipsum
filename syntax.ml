@@ -2,10 +2,17 @@
 
 module SM = Map.Make(String)
 
+type position =
+    { file:     string
+    ; line:     int
+    ; column:   int
+    }
+    
 
 type code =
     | Str       of string
     | Ref       of string
+    | Sync      of position
 
 type chunk =
     | Doc       of string
@@ -27,7 +34,7 @@ let empty =
     ; chunks    = []
     }
 
-let add key v map =
+let enlarge key v map =
     if SM.mem key map
     then SM.add key ((SM.find key map)@v) map
     else SM.add key v map
@@ -35,7 +42,7 @@ let add key v map =
 let index chunks =
     let add t = function
         | Doc(str)   as d ->    { t with chunks = d :: t.chunks }
-        | Code(n,cs) as c ->    { code   = add n cs t.code
+        | Code(n,cs) as c ->    { code   = enlarge n cs t.code
                                 ; chunks = c::t.chunks
                                 }
     in
@@ -48,7 +55,8 @@ let index chunks =
 let code = function
     | Str(str)      -> Printf.printf "|%s|"     str
     | Ref(str)      -> Printf.printf "<|%s|>" str
-        
+    | Sync(pos)     -> Printf.printf "# %d \"%s\"\n" pos.line pos.file
+            
 let chunk map = function 
     | Doc(str)       -> Printf.printf "@ %s"  str
     | Code(name,cs)  -> 
