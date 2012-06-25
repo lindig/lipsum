@@ -10,10 +10,10 @@ let printf    = Printf.printf
 
 let (@@) f x = f x
 
-let process f = function
+let process f  = function 
     | Some path -> 
         let io = open_in path in 
-            ( f io
+            ( (try f io with exn -> close_in io; raise exn)
             ; close_in io
             )
     | None -> f stdin
@@ -42,17 +42,8 @@ let doc io =
 let parse io =
     LP.print @@ doc io
 
-
-let print_chunk chunk doc =
-    let rec loop = function
-        | LP.Str(s)  -> print_string s
-        | LP.Ref(s)  -> List.iter loop (LP.SM.find s doc.LP.code)
-        | LP.Sync(p) -> printf "# %d \"%s\"\n" p.LP.line p.LP.file
-    in
-        List.iter loop (LP.SM.find chunk doc.LP.code)
-
 let expand chunk io =
-    print_chunk chunk @@ doc io
+    LP.print_chunk chunk @@ doc io
 
 let chunks io =
     List.iter print_endline @@ LP.code_chunks @@ doc io
@@ -94,6 +85,8 @@ let () =
         | Error(msg)         -> eprintf "error: %s\n" msg; exit 1
         | Failure(msg)       -> eprintf "error: %s\n" msg; exit 1
         | Scanner.Error(msg) -> eprintf "error: %s\n" msg; exit 1
+        | Sys_error(msg)     -> eprintf "error: %s\n" msg; exit 1
+        | LP.NoSuchChunk(msg)-> eprintf "no such chunk: %s\n" msg; exit 1
         (*
         | _                  -> Printf.eprintf "some unknown error occurred\n"; exit 1  
         *)

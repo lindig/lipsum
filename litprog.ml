@@ -3,6 +3,8 @@
 module SM = Map.Make(String)
 module SS = Set.Make(String)
 
+exception NoSuchChunk of string
+
 type position =
     { file:     string
     ; line:     int
@@ -64,7 +66,21 @@ let code_roots t =
         | Ref(n)    -> SS.remove n roots
     in
         SS.elements @@ List.fold_left traverse_chunk roots t.chunks
-    
+
+let lookup name map =
+    try
+        SM.find name map
+    with 
+        Not_found -> raise (NoSuchChunk name)
+
+let print_chunk chunk t =
+    let rec loop = function
+        | Str(s)  -> print_string s
+        | Ref(s)  -> List.iter loop (lookup s t.code)
+        | Sync(p) -> (* Printf.printf "# %d \"%s\"\n" p.line p.file *) ()
+    in
+        List.iter loop (lookup chunk t.code)
+
 
 (* Just for debugging during development
  *)
