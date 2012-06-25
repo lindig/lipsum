@@ -71,14 +71,15 @@ let main () =
     let this    = Filename.basename (List.hd argv) in
     let args    = List.tl argv in
         match args with
-        | "scan" ::file::[]     -> process scan  (Some file)
-        | "parse"::file::[]     -> process parse (Some file)
+        | "scan" ::path::[]     -> process scan  (Some path)
+        | "parse"::path::[]     -> process parse (Some path)
         | "scan" ::[]           -> process scan   None
         | "parse"::[]           -> process parse  None
-        | "expand"::s::file::[] -> process (expand s) (Some file)
-        | "chunks"::file::[]    -> process chunks (Some file)
-        | "roots"::file::[]     -> process roots (Some file)
-        | "escape"::file::[]    -> process escape (Some file)
+        | "expand"::s::path::[] -> process (expand s) (Some path)
+        | "tangle"::s::path::[] -> process (expand s) (Some path)
+        | "chunks"::path::[]    -> process chunks (Some path)
+        | "roots"::path::[]     -> process roots (Some path)
+        | "escape"::path::[]    -> process escape (Some path)
         
         | "help"::_             -> help this
         | "-help"::_            -> help this
