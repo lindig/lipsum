@@ -12,9 +12,8 @@ type position =
     }    
 
 type code =
-    | Str       of string
-    | Ref       of string
-    | Sync      of position
+    | Str       of position * string
+    | Ref       of position * string
 
 type chunk =
     | Doc       of string
@@ -61,9 +60,8 @@ let code_roots t =
         | Doc(_)       -> roots
         | Code(_,code) -> List.fold_left traverse_code roots code 
     and traverse_code roots = function
-        | Str(_)    -> roots
-        | Sync(_)   -> roots
-        | Ref(n)    -> SS.remove n roots
+        | Str(_,_)  -> roots
+        | Ref(_,n)  -> SS.remove n roots
     in
         SS.elements @@ List.fold_left traverse_chunk roots t.chunks
 
@@ -75,9 +73,8 @@ let lookup name map =
 
 let print_chunk chunk t =
     let rec loop = function
-        | Str(s)  -> print_string s
-        | Ref(s)  -> List.iter loop (lookup s t.code)
-        | Sync(p) -> (* Printf.printf "# %d \"%s\"\n" p.line p.file *) ()
+        | Str(_,s)  -> print_string s
+        | Ref(_,s)  -> List.iter loop (lookup s t.code)
     in
         List.iter loop (lookup chunk t.code)
 
@@ -86,9 +83,8 @@ let print_chunk chunk t =
  *)
 
 let code = function
-    | Str(str)      -> Printf.printf "|%s|"     str
-    | Ref(str)      -> Printf.printf "<|%s|>" str
-    | Sync(pos)     -> Printf.printf "# %d \"%s\"\n" pos.line pos.file
+    | Str(_,str)      -> Printf.printf "|%s|"     str
+    | Ref(_,str)      -> Printf.printf "<|%s|>" str
             
 let chunk map = function 
     | Doc(str)       -> Printf.printf "@ %s"  str
