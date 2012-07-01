@@ -48,7 +48,11 @@ rule token str = parse
                                         ; token str lexbuf         
                                         )                          
                                 }  
-    | "@@"                      { B.add_char str '@'     ; token str lexbuf }
+    | "@@"                      { (if col0 lexbuf
+                                   then  B.add_char str '@' 
+                                   else  B.add_string str "@@");
+                                  token str lexbuf
+                                }  
     | "@@<<"                    { B.add_string str "@<<" ; token str lexbuf }
     | '\n'                      { new_line lexbuf                  
                                 ; B.add_char str '\n'              
