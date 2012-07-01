@@ -4,6 +4,7 @@ module SM = Map.Make(String)
 module SS = Set.Make(String)
 
 exception NoSuchChunk of string
+exception Cycle       of string
 
 type position =
     { file:     string
@@ -71,13 +72,20 @@ let lookup name map =
     with 
         Not_found -> raise (NoSuchChunk name)
 
-let print_chunk chunk t =
-    let rec loop = function
-        | Str(_,s)  -> print_string s
-        | Ref(_,s)  -> List.iter loop (lookup s t.code)
-    in
-        List.iter loop (lookup chunk t.code)
 
+let expand t chunk =
+    let rec loop pred = function
+        | []                -> ()
+        | Str(_,s)::todo    -> print_string s; loop pred todo
+        | Ref(_,s)::todo    ->
+            if SS.mem s pred then
+                raise (Cycle s)
+            else
+                ( loop (SS.add s pred) (lookup s t.code)
+                ; loop pred todo
+                )
+    in
+        loop SS.empty (lookup chunk t.code)
 
 (* Just for debugging during development
  *)
