@@ -23,6 +23,8 @@ B<lipsum> B<prepare> [I<file>]
 
 B<lipsum> B<help>
 
+B<lipsum> B<copyright>
+
 =head1 DESCRIPTION
 
 B<Lipsum> is a tool for literate programming in the tradition of NoWeb and
@@ -68,6 +70,10 @@ Emits a short help message to stderr. The help message includes a few
 additional commands that are not listed here because they are intended
 for debugging.
 
+=item B<copyright>
+
+Emit the copyright notice and license to stdout.
+
 =back
 
 
@@ -106,7 +112,7 @@ Below is a simple example:
 
 Documentation is introduced by an C<@> at the beginning of a line, followed by
 a space or a newline. Code chunks are named and introduced by C<<<> and
-C<>>=>. A name can span several words but must not include a newline. A
+>>=. A name can span several words but must not include a newline. A
 reference to a chunk is enclosed by C<<<> and C<>>>. A chunk extends until the
 beginning of the next chunk or the end of input. The first chunk in a file is
 by default a documentation chunk.
@@ -129,13 +135,15 @@ references to itself or any of the chunks where it is referenced.
 
 =head1 QUOTING
 
-Since a lipsum file uses @, <<, >>, and >>= for markup some mechanism is
+Since a lipsum file uses @, <<, >>, and >>= for markup, a mechanism is
 needed to include these in documentation and code chunks, as well as chunk
 names. The general mechanism is to prefix strings with C<@> to escape their
 meaning as markup.
 
 To help with this when including existing source code into a literate program,
 the B<prepare> command adds these escape sequences to input.
+
+Below are situations where escaping is important.
 
 =over 4
 
@@ -211,8 +219,8 @@ notangle(1)
 
 =head1 AUTHOR
 
-Written by Christian Lindig <lindig@gmail.com>. Copyright 2012.
-
-=head1 VERSION
+Written by Christian Lindig <lindig@gmail.com>.
 
 =head1 LICENSE
+
+See command B<copyright> for how to display the copyright notice and license.
