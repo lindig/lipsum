@@ -110,9 +110,3 @@ Lipsum is distributed under the BSD-2 license. See file `lipsum.ml` for details.
 ## Author
 
 Christian Lindig <lindig@gmail.com>
-
-
-
-
-
-
