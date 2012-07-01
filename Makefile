@@ -19,7 +19,7 @@ OCB 	= ocamlbuild -yaccflag -v
 all:	lipsum lipsum.1
 
 
-install: dir native lipsum lipsum.1
+install: dir lipsum lipsum.1
 	install lipsum $(BIN)
 	install lipsum.1 $(MAN1DIR)
 
