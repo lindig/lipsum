@@ -1,12 +1,13 @@
 
 ### Lipsum - A Literate Programming Tool
 
-Lipsum is a command-line utility for literate programming in the tradition of
-[Noweb](http://www.cs.tufts.edu/~nr/noweb/). The idea of literate programming
-is to keep documentation for programmers and program code in one file and to
-arrange it in a way that helps understanding it. To actually compile or run
-the code it needs to be extracted from the literate program and Lipsum is a
-tool to do this.
+Lipsum is a command-line utility for literate programming. It stands in the
+tradition of [Noweb](http://www.cs.tufts.edu/~nr/noweb/), a popular and
+flexible literate programming system by Norman Ramsey. The idea of literate
+programming is to keep documentation for programmers and program code in one
+file and to arrange it in a way that helps understanding it. To actually
+compile or run the code it needs to be extracted from the literate program and
+Lipsum is a tool to do this.
 
 Like Noweb, Lipsum employs a minimal markup to arrange documentation and code
 in a file. Also like Noweb, Lipsum is language agnostic and can be used for
@@ -68,7 +69,7 @@ Noweb is a great tool with a flexible architecture that permits a user to plug
 in filters to extend it. This also makes its installation depend on various
 filters that are part of its distribution that are written in various
 languages. While this is usually not a problem if you develop code mostly for
-yourself, it makes adds one more dependency if you want to release code as
+yourself, it adds one more dependency if you want to release code as
 open source.
 
 Lipsum is less ambitious: it is just one binary and almost all it does is
