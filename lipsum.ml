@@ -52,12 +52,22 @@ let finally f x cleanup =
         | Success y  -> y 
         | Failed exn -> raise exn
 
-let process f = function
-    | Some path -> finally f (open_in path) close_in
-    | None      -> f stdin
+let set_fname lexbuf fname =
+    ( lexbuf.Lexing.lex_curr_p <-  
+        { lexbuf.Lexing.lex_curr_p with Lexing.pos_fname = fname }
+    ; lexbuf
+    )
+
+let scan_and_process f = function
+    | Some path -> 
+        let io = open_in path in
+        let lexbuf = set_fname (Lexing.from_channel io) path in
+            finally f lexbuf (fun _ -> close_in io)
+    | None      -> 
+        let lexbuf = set_fname (Lexing.from_channel stdin) "stdin" in
+            f lexbuf
             
-let scan io =
-    let lexbuf  = Lexing.from_channel io in
+let scan lexbuf =
     let rec loop lexbuf =
         match S.token' lexbuf with
         | P.EOF  -> print_endline @@ S.to_string P.EOF
@@ -67,27 +77,24 @@ let scan io =
     in
         loop lexbuf
 
-let escape io =
-    let lexbuf = Lexing.from_channel io in
-        Escape.escape stdout lexbuf
+let escape lexbuf = 
+    Escape.escape stdout lexbuf
 
-let doc io =
-    let lexbuf  = Lexing.from_channel io in
-    let ast     = P.litprog S.token' lexbuf in
+let litprog lexbuf =
+    let ast = P.litprog S.token' lexbuf in
         LP.index ast
-        
 
-let parse io =
-    LP.print @@ doc io
+let parse lexbuf =
+    LP.print @@ litprog lexbuf
 
-let expand chunk io =
-    LP.expand (doc io) chunk
+let expand chunk lexbuf =
+    LP.expand (litprog lexbuf) chunk
 
-let chunks io =
-    List.iter print_endline @@ LP.code_chunks @@ doc io
+let chunks lexbuf =
+    List.iter print_endline @@ LP.code_chunks @@ litprog lexbuf
 
-let roots io =
-    List.iter print_endline @@ LP.code_roots @@ doc io
+let roots lexbuf =
+    List.iter print_endline @@ LP.code_roots @@ litprog lexbuf
 
 let help this =
     let this = "lipsum" in
@@ -123,13 +130,13 @@ let main () =
     
     let args    = List.tl argv in
         match args with
-        | "scan" ::args     -> process scan  @@ path args
-        | "parse"::args     -> process parse @@ path args
-        | "expand"::s::args -> process (expand s) @@ path args
-        | "tangle"::s::args -> process (expand s) @@ path args
-        | "chunks"::args    -> process chunks @@ path args
-        | "roots"::args     -> process roots @@ path args
-        | "escape"::args    -> process escape @@ path args
+        | "scan" ::args     -> scan_and_process scan  @@ path args
+        | "parse"::args     -> scan_and_process parse @@ path args
+        | "expand"::s::args -> scan_and_process (expand s) @@ path args
+        | "tangle"::s::args -> scan_and_process (expand s) @@ path args
+        | "chunks"::args    -> scan_and_process chunks @@ path args
+        | "roots"::args     -> scan_and_process roots @@ path args
+        | "prepare"::args   -> scan_and_process escape @@ path args
         
         | "help"::_             -> help this; exit 0
         | "-help"::_            -> help this; exit 0
