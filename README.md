@@ -65,11 +65,16 @@ typeset with LaTeX.
 ## Why not using Noweb?
 
 Noweb is a great tool with a flexible architecture that permits a user to plug
-in filter to extend it. This also makes its installation depend on various
+in filters to extend it. This also makes its installation depend on various
 filters that are part of its distribution that are written in various
-languages. Lipsum is less ambitious: it is just one binary and almost all it
-does is extracting code from a literate program. I am planning to use it in
-combination with Markdown as a syntax for documentation.
+languages. While this is usually not a problem if you develop code mostly for
+yourself, it makes adds one more dependency if you want to release code as
+open source.
+
+Lipsum is less ambitious: it is just one binary and almost all it does is
+extracting code from a literate program. I am planning to use it in
+combination with Markdown as a syntax for documentation and to include it with
+literate programs that I release as open source.
 
 ## Implementation and Installation
 
