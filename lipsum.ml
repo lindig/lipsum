@@ -147,7 +147,8 @@ let () =
         | Scanner.Error(msg) -> eprintf "error: %s\n" msg; exit 1
         | Sys_error(msg)     -> eprintf "error: %s\n" msg; exit 1
         | LP.NoSuchChunk(msg)-> eprintf "no such chunk: %s\n" msg; exit 1
-        | LP.Cycle(s)        -> eprintf "chunk <<%s>> is part of a cycle\n" s
+        | LP.Cycle(s)        -> eprintf "chunk <<%s>> is part of a cycle\n" s;
+                                exit 1
         (*
         | _                  -> Printf.eprintf "some unknown error occurred\n"; exit 1  
         *)
