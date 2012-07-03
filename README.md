@@ -1,11 +1,11 @@
 
-### Lipsum - A Literate Programming Tool
+### Lipsum - Literate Programming Simplified
 
 Lipsum is a command-line utility for literate programming. It stands in the
 tradition of [Noweb](http://www.cs.tufts.edu/~nr/noweb/), a popular and
 flexible literate programming system by Norman Ramsey. The idea of literate
 programming is to keep documentation for programmers and program code in one
-file and to arrange it in a way that helps understanding it. To actually
+file and to arrange it in a way that helps understanding it best. To actually
 compile or run the code it needs to be extracted from the literate program and
 Lipsum is a tool to do this.
 
@@ -103,9 +103,9 @@ binary and the manual are getting installed.
 ## Documentation
 
 Lipsum comes with a Unix manual page `lipsum.1` that is generated from
-[`lipsum.pod`](lipsum.pod). POD is a simple markup language, much like
-Markdown, that is used by the Perl community. To view the manual page prior to
-installation use `nroff`:
+[`lipsum.pod`](blob/master/lipsum.pod). POD is a simple markup language, much
+like Markdown, that is used by the Perl community. To view the manual page
+prior to installation use `nroff`:
 
         $ nroff -man lipsum.1 | less
         
