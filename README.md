@@ -13,9 +13,9 @@ Like Noweb, Lipsum employs a minimal markup to arrange documentation and code
 in a file. Also like Noweb, Lipsum is language agnostic and can be used for
 almost any programming language and documentation.
 
-        Echo prints each command line argument on a line by itself. This 
-        documentation chunk extends until the beginning of the named code
-        chunk below. 
+        @ Echo prints each command line argument on a line by itself. This
+        documentation chunk starts with @ extends until the beginning of the
+        named code chunk below.
 
         <<echo.c>>=
         /* <<copyright>> */
@@ -30,15 +30,19 @@ almost any programming language and documentation.
         }
 
         @ By keeping the copyright notice in a chunk by itself it is easy to
-        include it in several files. This documenation chunk starts with 
-        an @ followed by a space and extends until the beginning of the next 
-        chunk.
+        include it in several files. This documenation chunk starts with an @
+        followed by a space and extends until the beginning of the next chunk.
+        Inside of documentation, @ only has special meaning at the beginning
+        of a line and hence is unlikely to interfear in most use cases.
 
         <<copyright>>=
         This code is in the public domain.
 
+        @ Below we are extending the code chunk above. 
+
         <<copyright>>=
         This code is part of the documentation for Lipsum.
+
 
 To extract the code for `echo.c` for compilation from the file `echo.lp` using
 Lipsum, one would run Lipsum like this:
