@@ -14,8 +14,10 @@ in a file. Also like Noweb, Lipsum is language agnostic and can be used for
 almost any programming language and documentation.
 
         @ Echo prints each command line argument on a line by itself. This
-        documentation chunk starts with @ extends until the beginning of the
-        named code chunk below.
+        documentation chunk starts with @ and extends until the beginning of
+        the named code chunk below. A lipsum file (`*.lp` by convention) is a
+        sequence of code and documentation chunks. Each chunk extends until
+        the beginning of the next one (or the end of file.)
 
         <<echo.c>>=
         /* <<copyright>> */
@@ -103,7 +105,7 @@ binary and the manual are getting installed.
 ## Documentation
 
 Lipsum comes with a Unix manual page `lipsum.1` that is generated from
-[`lipsum.pod`](blob/master/lipsum.pod). POD is a simple markup language, much
+[`lipsum.pod`](lipsum/blob/master/lipsum.pod). POD is a simple markup language, much
 like Markdown, that is used by the Perl community. To view the manual page
 prior to installation use `nroff`:
 
