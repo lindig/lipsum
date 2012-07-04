@@ -40,7 +40,7 @@ let append key v map =
     then SM.add key ((SM.find key map)@v) map
     else SM.add key v map
 
-let index chunks =
+let make chunks =
     let add t = function
         | Doc(str)   as d ->    { t with chunks = d :: t.chunks }
         | Code(n,cs) as c ->    { code   = append n cs t.code

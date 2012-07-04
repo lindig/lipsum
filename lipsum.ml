@@ -82,7 +82,7 @@ let escape lexbuf =
 
 let litprog lexbuf =
     let ast = P.litprog S.token' lexbuf in
-        LP.index ast
+        LP.make ast
 
 let parse lexbuf =
     LP.print @@ litprog lexbuf
