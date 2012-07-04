@@ -96,7 +96,8 @@ let chunks lexbuf =
 let roots lexbuf =
     List.iter print_endline @@ LP.code_roots @@ litprog lexbuf
 
-let help this =
+let help io =
+    let print_endline s = (output_string io s; output_char io '\n') in
     let this = "lipsum" in
     List.iter print_endline 
     [ this^" is a utility for literate programming"
@@ -126,8 +127,6 @@ let path = function
       
 let main () =
     let argv    = Array.to_list Sys.argv in
-    let this    = Filename.basename (List.hd argv) in
-    
     let args    = List.tl argv in
         match args with
         | "scan" ::args     -> scan_and_process scan  @@ path args
@@ -138,11 +137,11 @@ let main () =
         | "roots"::args     -> scan_and_process roots @@ path args
         | "prepare"::args   -> scan_and_process escape @@ path args
         
-        | "help"::_             -> help this; exit 0
-        | "-help"::_            -> help this; exit 0
+        | "help"::_             -> help stdout; exit 0
+        | "-help"::_            -> help stdout; exit 0
         | "copyright"::_        -> copyright (); exit 0
-        | []                    -> help this; exit 1
-        | _                     -> help this; exit 1
+        | []                    -> help stderr; exit 1
+        | _                     -> help stderr; exit 1
 
 
 let () = 
