@@ -2,6 +2,7 @@
 module S  = Scanner
 module P  = Parser
 module LP = Litprog
+module T  = Tangle
 
 exception Error of string
 let error fmt = Printf.kprintf (fun msg -> raise (Error msg)) fmt
@@ -106,7 +107,7 @@ let help io =
     ; this^" roots [file.lp]            list root chunks"
     ; this^" chunks [file.lp]           list all chunks"
     ; this^" tangle chunk [file.lp]     extract chunk from file"
-    ; this^" prepare [file.ip]          prepare file.lp to be used as chunk"
+    ; this^" prepare [file]             prepare file to be used as chunk"
     ; ""
     ; "See the manual lipsum(1) for documentation."
     ; this^" copyright                  display copyright notice"
@@ -116,6 +117,7 @@ let help io =
     ; this^" parse [file.lp]            parse file and emit it"
     ; ""
     ; "Copyright (c) 2012 Christian Lindig <lindig@gmail.com>"
+    ; "https://github.com/lindig/lipsum.git"
     ]
 
  
