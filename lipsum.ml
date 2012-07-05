@@ -89,7 +89,7 @@ let parse lexbuf =
     LP.print @@ litprog lexbuf
 
 let expand chunk lexbuf =
-    LP.expand (litprog lexbuf) chunk
+    LP.expand (litprog lexbuf) T.plain chunk
 
 let chunks lexbuf =
     List.iter print_endline @@ LP.code_chunks @@ litprog lexbuf

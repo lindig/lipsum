@@ -2,12 +2,13 @@
 module LP = Litprog
 module P  = Parsing
 module L  = Lexing
+module T  = Tangle
 
 let position n = 
     let p = P.rhs_start_pos n in
-        { LP.file = p.L.pos_fname
-        ; LP.line = p.L.pos_lnum
-        ; LP.column = p.L.pos_cnum
+        { T.file = p.L.pos_fname
+        ; T.line = p.L.pos_lnum
+        ; T.column = p.L.pos_cnum
         }
 %}
 

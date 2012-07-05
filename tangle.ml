@@ -1,11 +1,18 @@
 
-module LP = Litprog
 module SM = Map.Make(String)
 
 exception NoSuchFormat of string
 
-type t = out_channel -> Litprog.position -> string -> unit
+type position = 
+    { file : string
+    ; line : int
+    ; column : int; 
+    }
+    
+type t = out_channel -> position -> string -> unit
 
+
+    
 let fprintf = Printf.fprintf
 let escaped = String.escaped
 let (@@) f x = f x
@@ -14,7 +21,7 @@ let plain io pos str =
     output_string io str
 
 let cpp io pos str =
-    ( fprintf io "# %d \"%s\"\n" pos.LP.line (escaped pos.LP.file)
+    ( fprintf io "# %d \"%s\"\n" pos.line (escaped pos.file)
     ; output_string io str
     )
 

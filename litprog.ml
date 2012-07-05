@@ -2,19 +2,16 @@
 
 module SM = Map.Make(String)
 module SS = Set.Make(String)
+module T  = Tangle
 
 exception NoSuchChunk of string
 exception Cycle       of string
 
-type position =
-    { file:     string
-    ; line:     int
-    ; column:   int
-    }    
+
 
 type code =
-    | Str       of position * string
-    | Ref       of position * string
+    | Str       of T.position * string
+    | Ref       of T.position * string
 
 type chunk =
     | Doc       of string
@@ -73,11 +70,11 @@ let lookup name map =
         Not_found -> raise (NoSuchChunk name)
 
 
-let expand t chunk =
+let expand t tangle chunk =
     let rec loop pred = function
-        | []                -> ()
-        | Str(_,s)::todo    -> print_string s; loop pred todo
-        | Ref(_,s)::todo    ->
+        | []                  -> ()
+        | Str(pos,s)::todo    -> tangle stdout pos s; loop pred todo
+        | Ref(pos,s)::todo    ->
             if SS.mem s pred then
                 raise (Cycle s)
             else
