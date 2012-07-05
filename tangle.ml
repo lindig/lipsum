@@ -25,10 +25,19 @@ let cpp io pos str =
     ; output_string io str
     )
 
+let comment cstr io pos str =
+    ( fprintf io "%s %s %d\n" cstr (escaped pos.file) pos.line
+    ; output_string io str
+    )
+
 let formats =
     List.fold_left (fun map (key,v) -> SM.add key v map) SM.empty
     [ "plain", plain
     ; "cpp", cpp
+    ; "postscript", comment "%"
+    ; "tex", comment "%"
+    ; "ruby", comment "#"
+    ; "shell", comment "#"
     ]
 
 let lookup fmt = 
