@@ -88,8 +88,8 @@ let litprog lexbuf =
 let parse lexbuf =
     LP.print @@ litprog lexbuf
 
-let expand chunk lexbuf =
-    LP.expand (litprog lexbuf) T.plain chunk
+let expand fmt chunk lexbuf =
+    LP.expand (litprog lexbuf) (T.lookup fmt) chunk
 
 let chunks lexbuf =
     List.iter print_endline @@ LP.code_chunks @@ litprog lexbuf
@@ -107,6 +107,7 @@ let help io =
     ; this^" roots [file.lp]            list root chunks"
     ; this^" chunks [file.lp]           list all chunks"
     ; this^" tangle chunk [file.lp]     extract chunk from file"
+    ; this^" tangle                     show tangle formats available"
     ; this^" prepare [file]             prepare file to be used as chunk"
     ; ""
     ; "See the manual lipsum(1) for documentation."
@@ -120,6 +121,8 @@ let help io =
     ; "https://github.com/lindig/lipsum.git"
     ]
 
+let tangle_formats () =
+    print_endline @@ String.concat " " T.formats
  
 let path = function 
     | []        -> None 
@@ -133,8 +136,10 @@ let main () =
         match args with
         | "scan" ::args     -> scan_and_process scan  @@ path args
         | "parse"::args     -> scan_and_process parse @@ path args
-        | "expand"::s::args -> scan_and_process (expand s) @@ path args
-        | "tangle"::s::args -> scan_and_process (expand s) @@ path args
+        | "expand"::s::args -> scan_and_process (expand "plain" s) @@ path args
+        | "tangle"::"-f"::x::s::args -> scan_and_process (expand x s) @@ path args
+        | "tangle"::s::args -> scan_and_process (expand "plain" s) @@ path args
+        | "tangle"::[]      -> tangle_formats ()
         | "chunks"::args    -> scan_and_process chunks @@ path args
         | "roots"::args     -> scan_and_process roots @@ path args
         | "prepare"::args   -> scan_and_process escape @@ path args
@@ -154,6 +159,7 @@ let () =
         | Failure(msg)       -> eprintf "error: %s\n" msg; exit 1
         | Scanner.Error(msg) -> eprintf "error: %s\n" msg; exit 1
         | Sys_error(msg)     -> eprintf "error: %s\n" msg; exit 1
+        | T.NoSuchFormat(s)  -> eprintf "unknown tangle format %s\n" s; exit 1
         | LP.NoSuchChunk(msg)-> eprintf "no such chunk: %s\n" msg; exit 1
         | LP.Cycle(s)        -> eprintf "chunk <<%s>> is part of a cycle\n" s;
                                 exit 1

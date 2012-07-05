@@ -13,7 +13,9 @@ lipsum - simple literate programming utility
 
 =head1 SYNOPSIS
 
-B<lipsum> B<expand> I<chunk> [I<file.lp>]
+B<lipsum> B<tangle> [B<-f> I<fmt>] I<chunk> [I<file.lp>]
+
+B<lipsum> B<tangle> 
 
 B<lipsum> B<roots> [I<file.lp>]
 
@@ -43,11 +45,17 @@ no file name is given. Output of a command generally goes to stdout.
 
 =over 4
 
-=item B<expand> I<chunk> [I<file.lp>]
+=item B<tangle> [B<-f> I<fmt>] I<chunk> [I<file.lp>]
 
 Extract I<chunk> from I<file.lp> and emit it to stdout. Commands B<chunks> and
-B<roots> list the available chunks. Command B<tangle> can be used as a synonym
-for B<expand>.
+B<roots> list the available chunks. The extracted code optionally includes
+references to the original source code location in I<file.lp>. For a list of
+available formats, use B<tangle> with no arguments.
+
+=item B<tangle> 
+
+Emit list of available source code position formats. The best knwon format 
+is C<cpp> as it is used by the C pre processor cpp(1).
 
 =item B<roots> [I<file.lp>]
 
@@ -215,7 +223,7 @@ occurs.
 
 =head1 SEE ALSO
 
-notangle(1)
+notangle(1), cpp(1)
 
 =head1 AUTHOR
 
