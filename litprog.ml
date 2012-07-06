@@ -87,14 +87,20 @@ let expand t tangle chunk =
 (* Just for debugging during development
  *)
 
+let excerpt s =
+    let str = String.escaped s in
+    let len = String.length str in
+        if len < 40 then str 
+        else String.sub str 0 10 ^ "..." ^ String.sub str (len - 10) 10
+             
 let code = function
-    | Str(_,str)      -> Printf.printf "|%s|"     str
-    | Ref(_,str)      -> Printf.printf "<|%s|>" str
+    | Str(p,str)      -> Printf.printf "%3d: %s\n" p.T.line (excerpt str)
+    | Ref(p,str)      -> Printf.printf "%3d: <<%s>>\n" p.T.line str
             
 let chunk map = function 
-    | Doc(str)       -> Printf.printf "@ %s"  str
+    | Doc(str)       -> Printf.printf "@ %s\n"  (excerpt str)
     | Code(name,cs)  -> 
-            ( Printf.printf "<|%s|>=" name
+            ( Printf.printf "<<%s>>=\n" name
             ; List.iter code cs
             )
 

@@ -82,12 +82,19 @@ and name str = parse
                                                               
 {
 
+let excerpt s =
+    let str = String.escaped s in
+    let len = String.length str in
+        if len < 40 then str 
+        else
+            String.sub str 0 10 ^ "..." ^ String.sub str (len - 10) 10
+            
 let to_string = function
-    | P.EOF         -> "+ eof"  
-    | P.DEF(s)      -> Printf.sprintf "+ <<%s>>=" s
-    | P.REF(s)      -> Printf.sprintf "+ <<%s>>" s
-    | P.AT          -> "+ @ "
-    | P.STR(s)      -> "|"^s^"|"
+    | P.EOF         -> "EOF"  
+    | P.DEF(s)      -> Printf.sprintf "<<%s>>=" s
+    | P.REF(s)      -> Printf.sprintf "<<%s>>" s
+    | P.AT          -> "@"
+    | P.STR(s)      -> excerpt s
 
 
 let next = ref None
