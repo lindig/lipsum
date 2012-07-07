@@ -31,10 +31,11 @@ B<lipsum> B<copyright>
 
 B<Lipsum> is a tool for literate programming in the tradition of NoWeb and
 Sweave. A literate program is a file that contains both documentation and
-source code which are seperated by a lightweigt markup. B<lipsum>'s
-primary task is to extract the source from from a literate program to make it
-available for compilation and execution. B<Lipsum> is language agnostic
-and can be used with almost any programming language and documentation syntax.
+source code which are seperated by a lightweigt markup. B<lipsum>'s primary
+task is to extract the source from from a literate program to make it
+available for compilation and execution. This is traditionally called
+I<tangling>. B<Lipsum> is language agnostic and can be used with almost any
+programming language and documentation syntax.
 
 =head1 COMMANDS
 
@@ -227,8 +228,9 @@ notangle(1), cpp(1)
 
 =head1 AUTHOR
 
-Written by Christian Lindig <lindig@gmail.com>.
-
+Written by Christian Lindig <lindig@gmail.com>. Source code available from 
+https://github.com/lindig/lipsum.git
+    
 =head1 LICENSE
 
 See command B<copyright> for how to display the copyright notice and license.

@@ -113,6 +113,10 @@ prior to installation use `nroff`:
         
 After installation it is available using `man lipsum` as usual.
 
+## Source Code
+
+https://github.com/lindig/lipsum.git
+
 ## License
 
 Lipsum is distributed under the BSD-2 license. The license can be also displayed by the program:
@@ -151,3 +155,4 @@ Lipsum is distributed under the BSD-2 license. The license can be also displayed
 ## Author
 
 Christian Lindig <lindig@gmail.com>
+

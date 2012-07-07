@@ -90,7 +90,7 @@ let excerpt s =
     let len = String.length str in
         if len < 40 then str 
         else
-            String.sub str 0 10 ^ "..." ^ String.sub str (len - 10) 10
+            String.sub str 0 20 ^ " ... " ^ String.sub str (len - 20) 20
             
 let to_string = function
     | P.EOF         -> "EOF"  

@@ -8,12 +8,15 @@ exception Error of string
 let error fmt = Printf.kprintf (fun msg -> raise (Error msg)) fmt
 let eprintf   = Printf.eprintf
 let printf    = Printf.printf
+let giturl    = "https://github.com/lindig/lipsum.git"
+
 
 let (@@) f x = f x
 
 let copyright () =
     List.iter print_endline
-    [ "Copyright (c) 2012, Christian Lindig <lindig@gmail.com>"
+    [ giturl
+    ; "Copyright (c) 2012, Christian Lindig <lindig@gmail.com>"
     ; "All rights reserved."
     ; ""
     ; "Redistribution and use in source and binary forms, with or"
@@ -103,22 +106,22 @@ let help io =
     List.iter print_endline 
     [ this^" is a utility for literate programming"
     ; ""
-    ; this^" help                       emit help to stdout"
-    ; this^" roots [file.lp]            list root chunks"
-    ; this^" chunks [file.lp]           list all chunks"
-    ; this^" tangle chunk [file.lp]     extract chunk from file"
-    ; this^" tangle                     show tangle formats available"
-    ; this^" prepare [file]             prepare file to be used as chunk"
+    ; this^" help                               emit help to stdout"
+    ; this^" roots [file.lp]                    list root chunks"
+    ; this^" chunks [file.lp]                   list all chunks"
+    ; this^" tangle [-f fmt] file.c [file.lp]   extract file.c from file.lp"
+    ; this^" tangle                             show tangle formats available"
+    ; this^" prepare [file]                     prepare file to be used as chunk"
     ; ""
     ; "See the manual lipsum(1) for documentation."
-    ; this^" copyright                  display copyright notice"
+    ; this^" copyright                          display copyright notice"
     ; ""
     ; "Debugging commands:"
-    ; this^" scan [file.lp]             tokenize file and emit tokens"
-    ; this^" parse [file.lp]            parse file and emit it"
+    ; this^" scan [file.lp]                     tokenize file and emit tokens"
+    ; this^" parse [file.lp]                    parse file and emit it"
     ; ""
+    ; giturl
     ; "Copyright (c) 2012 Christian Lindig <lindig@gmail.com>"
-    ; "https://github.com/lindig/lipsum.git"
     ]
 
 let tangle_formats () =
