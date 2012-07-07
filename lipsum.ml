@@ -140,10 +140,9 @@ let main () =
         | "scan" ::args     -> scan_and_process scan  @@ path args
         | "parse"::args     -> scan_and_process parse @@ path args
         | "expand"::s::args -> scan_and_process (tangle "plain" s) @@ path args
-        | "tangle"::"-f"::x::s::args -> 
-                               scan_and_process (tangle x s) @@ path args
+        | "tangle"::"-f"::fmt::chunk::args -> 
+                               scan_and_process (tangle fmt chunk) @@ path args
         | "tangle"::s::args -> scan_and_process (tangle "plain" s) @@ path args
-        | "tangle"::"-f"::[]-> tangle_formats ()
         | "chunks"::args    -> scan_and_process chunks @@ path args
         | "roots"::args     -> scan_and_process roots @@ path args
         | "prepare"::args   -> scan_and_process escape @@ path args
