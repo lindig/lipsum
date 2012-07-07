@@ -20,8 +20,8 @@ include it in several files. This documenation chunk starts with
 an @ followed by a space and extends until the beginning of the next 
 chunk.
 
-<<copyright>>=
+<<copyright>>= 
 This code is in the public domain.
 
-<<copyright>>=
+<<copyright>>= 
 This code is part of the documentation for Lipsum.
