@@ -11,7 +11,7 @@ exception Cycle       of string
 
 type code =
     | Str       of T.position * string
-    | Ref       of T.position * string
+    | Ref       of string
 
 type chunk =
     | Doc       of string
@@ -24,7 +24,7 @@ type t =
     ; chunks:   chunk list
     }
 
-
+let printf = Printf.printf
 let (@@) f x = f x
 
 let empty =
@@ -59,7 +59,7 @@ let code_roots t =
         | Code(_,code) -> List.fold_left traverse_code roots code 
     and traverse_code roots = function
         | Str(_,_)  -> roots
-        | Ref(_,n)  -> SS.remove n roots
+        | Ref(n)    -> SS.remove n roots
     in
         SS.elements @@ List.fold_left traverse_chunk roots t.chunks
 
@@ -74,7 +74,7 @@ let expand t tangle chunk =
     let rec loop pred = function
         | []                  -> ()
         | Str(pos,s)::todo    -> tangle stdout pos s; loop pred todo
-        | Ref(pos,s)::todo    ->
+        | Ref(s)::todo        ->
             if SS.mem s pred then
                 raise (Cycle s)
             else
@@ -94,8 +94,8 @@ let excerpt s =
         else String.sub str 0 10 ^ "..." ^ String.sub str (len - 10) 10
              
 let code = function
-    | Str(p,str)      -> Printf.printf "%3d: %s\n" p.T.line (excerpt str)
-    | Ref(p,str)      -> Printf.printf "%3d: <<%s>>\n" p.T.line str
+    | Str(p,str) -> printf "%3d (%4d): %s\n" p.T.line p.T.offset (excerpt str)
+    | Ref(str)   -> printf "<<%s>>\n"        str
             
 let chunk map = function 
     | Doc(str)       -> Printf.printf "@ %s\n"  (excerpt str)

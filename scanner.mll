@@ -18,7 +18,7 @@
         let p = position lexbuf in
         Printf.kprintf (fun msg -> raise (Error (p^" "^msg))) fmt
 
-    let return tok str = (tok,B.contents str)
+    let return tok pos str = (tok,pos,B.contents str)
     let (@@) f x = f x
 
     (* col0 is true, iff a match starts at the beginning of a line *)
@@ -29,37 +29,40 @@
 
 }
 
-rule token str = parse
-      eof                       { return P.EOF str     }
-    | "@<<"                     { B.add_string str "<<" ; token str lexbuf }
+rule token pos str = parse
+      eof                       { return P.EOF pos str     }
+    | "@<<"                     { B.add_string str "<<" 
+                                ; token pos str lexbuf
+                                }
     | "<<"                      { let x   = name (Buffer.create 40) lexbuf in
-                                    return x str 
+                                    return x pos str
                                 }
     | "@ "                      { if col0 lexbuf                   
-                                  then return P.AT str               
+                                  then return P.AT pos str               
                                   else  ( B.add_char str '@'       
-                                        ; token str lexbuf         
+                                        ; token pos str lexbuf         
                                         )                          
                                 }                                 
     | "@\n"                     { new_line lexbuf;
                                   if col0 lexbuf                   
-                                  then return P.AT str               
+                                  then return P.AT pos str               
                                   else  ( B.add_string str (get lexbuf)
-                                        ; token str lexbuf         
+                                        ; token pos str lexbuf         
                                         )                          
                                 }  
     | "@@"                      { (if col0 lexbuf
                                    then  B.add_char str '@' 
                                    else  B.add_string str "@@");
-                                  token str lexbuf
+                                  token pos str lexbuf
                                 }  
-    | "@@<<"                    { B.add_string str "@<<" ; token str lexbuf }
+    | "@@<<"                    { B.add_string str "@<<" 
+                                ; token pos str lexbuf }
     | '\n'                      { new_line lexbuf                  
                                 ; B.add_char str '\n'              
-                                ; token str lexbuf                 
+                                ; token pos str lexbuf                 
                                 }                                  
     | _                         { B.add_char str (getchar lexbuf 0)
-                                ; token str lexbuf                 
+                                ; token pos str lexbuf                 
                                 }                                  
 and name str = parse
       eof                       { error lexbuf "unexpected end of file in <<..>>" }
@@ -94,15 +97,16 @@ let to_string = function
     | P.DEF(s)      -> Printf.sprintf "<<%s>>=" s
     | P.REF(s)      -> Printf.sprintf "<<%s>>" s
     | P.AT          -> "@"
-    | P.STR(s)      -> excerpt s
+    | P.STR(_,s)    -> excerpt s
 
 
 let next = ref None
 let token' lexbuf =
+    let pos = lexbuf.L.lex_curr_p in
     match !next with
-    | None  -> let t,s = token (Buffer.create 256) lexbuf in
+    | None  -> let t,p,s = token pos (Buffer.create 256) lexbuf in
                ( next := Some t
-               ; P.STR(s)
+               ; P.STR(p,s)
                )
     | Some t -> ( next := None
                 ; t

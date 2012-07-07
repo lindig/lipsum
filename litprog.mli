@@ -4,7 +4,7 @@ exception Cycle of string
 
 type code = 
     | Str of Tangle.position * string 
-    | Ref of Tangle.position * string
+    | Ref of string
     
 type chunk = 
     | Doc of string 
