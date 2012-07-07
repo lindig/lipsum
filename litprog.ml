@@ -70,10 +70,10 @@ let lookup name map =
         Not_found -> raise (NoSuchChunk name)
 
 
-let expand t tangle chunk =
+let tangle t emit chunk =
     let rec loop pred = function
         | []                  -> ()
-        | Str(pos,s)::todo    -> tangle stdout pos s; loop pred todo
+        | Str(pos,s)::todo    -> emit stdout pos s; loop pred todo
         | Ref(s)::todo        ->
             if SS.mem s pred then
                 raise (Cycle s)

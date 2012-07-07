@@ -88,8 +88,8 @@ let litprog lexbuf =
 let parse lexbuf =
     LP.print @@ litprog lexbuf
 
-let expand fmt chunk lexbuf =
-    LP.expand (litprog lexbuf) (T.lookup fmt) chunk
+let tangle fmt chunk lexbuf =
+    LP.tangle (litprog lexbuf) (T.lookup fmt) chunk
 
 let chunks lexbuf =
     List.iter print_endline @@ LP.code_chunks @@ litprog lexbuf
@@ -136,9 +136,10 @@ let main () =
         match args with
         | "scan" ::args     -> scan_and_process scan  @@ path args
         | "parse"::args     -> scan_and_process parse @@ path args
-        | "expand"::s::args -> scan_and_process (expand "plain" s) @@ path args
-        | "tangle"::"-f"::x::s::args -> scan_and_process (expand x s) @@ path args
-        | "tangle"::s::args -> scan_and_process (expand "plain" s) @@ path args
+        | "expand"::s::args -> scan_and_process (tangle "plain" s) @@ path args
+        | "tangle"::"-f"::x::s::args -> 
+                               scan_and_process (tangle x s) @@ path args
+        | "tangle"::s::args -> scan_and_process (tangle "plain" s) @@ path args
         | "tangle"::[]      -> tangle_formats ()
         | "chunks"::args    -> scan_and_process chunks @@ path args
         | "roots"::args     -> scan_and_process roots @@ path args

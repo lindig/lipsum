@@ -16,5 +16,5 @@ type t
 val make : chunk list -> t
 val code_chunks : t -> string list
 val code_roots : t -> string list 
-val expand : t -> Tangle.t -> string -> unit (* NoSuchChunk, Cycle *)
+val tangle : t -> Tangle.t -> string -> unit (* NoSuchChunk, Cycle *)
 val print : t -> unit
