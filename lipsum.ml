@@ -110,11 +110,11 @@ let help io =
     ; this^" roots [file.lp]                    list root chunks"
     ; this^" chunks [file.lp]                   list all chunks"
     ; this^" tangle [-f fmt] file.c [file.lp]   extract file.c from file.lp"
-    ; this^" tangle                             show tangle formats available"
+    ; this^" tangle -f                          show tangle formats available"
     ; this^" prepare [file]                     prepare file to be used as chunk"
+    ; this^" copyright                          display copyright notice"
     ; ""
     ; "See the manual lipsum(1) for documentation."
-    ; this^" copyright                          display copyright notice"
     ; ""
     ; "Debugging commands:"
     ; this^" scan [file.lp]                     tokenize file and emit tokens"
@@ -143,7 +143,7 @@ let main () =
         | "tangle"::"-f"::x::s::args -> 
                                scan_and_process (tangle x s) @@ path args
         | "tangle"::s::args -> scan_and_process (tangle "plain" s) @@ path args
-        | "tangle"::[]      -> tangle_formats ()
+        | "tangle"::"-f"::[]-> tangle_formats ()
         | "chunks"::args    -> scan_and_process chunks @@ path args
         | "roots"::args     -> scan_and_process roots @@ path args
         | "prepare"::args   -> scan_and_process escape @@ path args

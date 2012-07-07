@@ -15,7 +15,7 @@ lipsum - simple literate programming utility
 
 B<lipsum> B<tangle> [B<-f> I<fmt>] I<chunk> [I<file.lp>]
 
-B<lipsum> B<tangle> 
+B<lipsum> B<tangle> B<-f>
 
 B<lipsum> B<roots> [I<file.lp>]
 
@@ -39,7 +39,7 @@ programming language and documentation syntax.
 
 =head1 COMMANDS
 
-The first command line parameter identifies a command (like B<expand> or
+The first command line parameter identifies a command (like B<tangle> or
 B<help>), which is followed by options, parameters, and file names. A command
 that expects a named file for input will typically read input from stdin when
 no file name is given. Output of a command generally goes to stdout.
@@ -50,13 +50,13 @@ no file name is given. Output of a command generally goes to stdout.
 
 Extract I<chunk> from I<file.lp> and emit it to stdout. Commands B<chunks> and
 B<roots> list the available chunks. The extracted code optionally includes
-references to the original source code location in I<file.lp>. For a list of
-available formats, use B<tangle> with no arguments.
+references to  original source code locations in I<file.lp>. For a list of
+available formats, use B<tangle -f>.
 
-=item B<tangle> 
+=item B<tangle> B<-f>
 
 Emit list of available source code position formats. The best knwon format 
-is C<cpp> as it is used by the C pre processor cpp(1).
+is C<cpp> as it is used by the C preprocessor cpp(1).
 
 =item B<roots> [I<file.lp>]
 
@@ -161,7 +161,7 @@ Below are situations where escaping is important.
 The C<@> character only needs to be escaped when it is the first character in
 a line. Escape it as C<@@>.
 
-=item C<<<> in code or documentation
+=item C<<< << >>> in code or documentation
 
 Any occurrence of C<<<> in code or documentation that does not indicate a
 named chunk needs to be escaped as C<@<<>.
@@ -174,11 +174,11 @@ Escape C<@<<> as C<@@<<>.
 
 Escape C<@> as C<@@>.
 
-=item <<, >>, and >>= in chunk names
+=item C<<< << >>>, and C<<< >>= >>> in chunk names
 
 Escape any of the above strings by prexifing them with C<@>.
 
-=item @<<, @>>, @>>= in chunk names
+=item C<<< @<< >>>, C<<< @>> >>>, C<<< @>>= >>> in chunk names
 
 Escape any of them by prefixing them with another C<@>.
 
@@ -221,6 +221,10 @@ Lipsum is not unicode aware but should work with UTF8 files regardless.
 
 The B<lipsum> utility returns 0 on success and a positive number if an error
 occurs.
+
+=head1 EXIT CODE
+
+B<Lipusm> exists with 0 on success and a positive number otherwise.
 
 =head1 SEE ALSO
 

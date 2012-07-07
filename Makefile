@@ -11,7 +11,7 @@ INSTALL = install
 
 # OCaml 
 
-OCB 	= ocamlbuild -yaccflag -v
+OCB 	= ocamlbuild -yaccflag -v -cflag -annot
 
 #
 #
