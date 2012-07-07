@@ -39,7 +39,7 @@ rule token pos str = parse
                                 }
     | "@ "                      { if col0 lexbuf                   
                                   then return P.AT pos str               
-                                  else  ( B.add_char str '@'       
+                                  else  ( B.add_string str (get lexbuf)     
                                         ; token pos str lexbuf         
                                         )                          
                                 }                                 
