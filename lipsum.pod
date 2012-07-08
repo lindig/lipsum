@@ -6,10 +6,11 @@
 # escapes) in exchange for an easy way to update the manual page.
 #
 
+__END__
 
 =head1 NAME
 
-lipsum - simple literate programming utility
+lipsum - a simple literate programming utility
 
 =head1 SYNOPSIS
 
@@ -21,9 +22,11 @@ B<lipsum> B<roots> [I<file.lp>]
 
 B<lipsum> B<chunks> [I<file.lp>]
 
+B<lipsum> B<weave> [I<file.lp>]
+
 B<lipsum> B<prepare> [I<file>]
 
-B<lipsum> B<help>
+B<lipsum> B<help>|B<-help>
 
 B<lipsum> B<copyright>
 
@@ -55,8 +58,9 @@ available formats, use B<tangle -f>.
 
 =item B<tangle> B<-f>
 
-Emit list of available source code position formats. The best knwon format 
-is C<cpp> as it is used by the C preprocessor cpp(1).
+Emit list of available source code position formats. The best known format 
+is C<cpp> as it is used by the C preprocessor cpp(1) and works for many 
+languages that use C<#> to start a comment.
 
 =item B<roots> [I<file.lp>]
 
@@ -66,6 +70,11 @@ that is not part of another code chunk.
 =item B<chunks> [I<file.lp>]
 
 List the name of all code chunks, one per line.
+
+=item B<weave> [I<file.lp>]
+
+Emit I<file.lp>  with code chunks indented by 4 spaces. This makes the output 
+suitable for Markdown provided the documentation is already in Markdown syntax.
 
 =item B<prepare> [I<file>]
 
@@ -224,11 +233,11 @@ occurs.
 
 =head1 EXIT CODE
 
-B<Lipusm> exists with 0 on success and a positive number otherwise.
+B<Lipusm> exits with 0 on success and a positive number otherwise.
 
 =head1 SEE ALSO
 
-notangle(1), cpp(1)
+notangle(1), cpp(1), http://daringfireball.net/projects/markdown/
 
 =head1 AUTHOR
 
