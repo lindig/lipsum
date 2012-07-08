@@ -19,12 +19,8 @@
         let p = position lexbuf in
         Printf.kprintf (fun msg -> raise (Error (p^" "^msg))) fmt
 
-    let return tok pos str strs = 
-        ( tok
-        , pos
-        , List.rev @@ (B.contents str) :: strs
-        )
-
+    let return tok pos str = (tok,pos,B.contents str)
+    let (@@) f x = f x
 
     (* col0 is true, iff a match starts at the beginning of a line *)
     let col0 lexbuf = 
@@ -34,40 +30,40 @@
 
 }
 
-rule token pos str strs = parse
-      eof                       { return P.EOF pos str strs    }
+rule token pos str = parse
+      eof                       { return P.EOF pos str     }
     | "@<<"                     { B.add_string str "<<" 
-                                ; token pos str strs lexbuf
+                                ; token pos str lexbuf
                                 }
-    | "<<"                      { let x   = name (B.create 40) lexbuf in
-                                    return x pos str strs
+    | "<<"                      { let x   = name (Buffer.create 40) lexbuf in
+                                    return x pos str
                                 }
     | "@ "                      { if col0 lexbuf                   
-                                  then return P.AT pos str strs               
+                                  then return P.AT pos str               
                                   else  ( B.add_string str (get lexbuf)     
-                                        ; token pos str strs lexbuf         
+                                        ; token pos str lexbuf         
                                         )                          
                                 }                                 
     | "@\n"                     { new_line lexbuf;
                                   if col0 lexbuf                   
-                                  then return P.AT pos str strs               
+                                  then return P.AT pos str               
                                   else  ( B.add_string str (get lexbuf)
-                                        ; token pos str strs lexbuf         
+                                        ; token pos str lexbuf         
                                         )                          
                                 }  
     | "@@"                      { (if col0 lexbuf
                                    then  B.add_char str '@' 
                                    else  B.add_string str "@@");
-                                  token pos str strs lexbuf
+                                  token pos str lexbuf
                                 }  
     | "@@<<"                    { B.add_string str "@<<" 
-                                ; token pos str strs lexbuf }
+                                ; token pos str lexbuf }
     | '\n'                      { new_line lexbuf                  
-                                ; let s = B.contents str in
-                                    token pos (B.create 256) (s::strs) lexbuf                 
+                                ; B.add_char str '\n'              
+                                ; token pos str lexbuf                 
                                 }                                  
     | _                         { B.add_char str (getchar lexbuf 0)
-                                ; token pos str strs lexbuf                 
+                                ; token pos str lexbuf                 
                                 }                                  
 and name str = parse
       eof                       { error lexbuf "unexpected end of file in <<..>>" }
@@ -102,14 +98,14 @@ let to_string = function
     | P.DEF(s)      -> Printf.sprintf "<<%s>>=" s
     | P.REF(s)      -> Printf.sprintf "<<%s>>" s
     | P.AT          -> "@"
-    | P.STR(_,strs) -> excerpt @@ String.concat "\n" strs
+    | P.STR(_,s)    -> excerpt s
 
 
 let next = ref None
 let token' lexbuf =
     let pos = lexbuf.L.lex_curr_p in
     match !next with
-    | None  -> let t,p,s = token pos (Buffer.create 256) [] lexbuf in
+    | None  -> let t,p,s = token pos (Buffer.create 256) lexbuf in
                ( next := Some t
                ; P.STR(p,s)
                )

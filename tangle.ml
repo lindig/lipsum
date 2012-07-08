@@ -10,28 +10,25 @@ type position =
     ; offset:   int
     }
     
-type t = out_channel -> position -> string list -> unit
+type t = out_channel -> position -> string -> unit
 
 
     
 let fprintf = Printf.fprintf
 let escaped = String.escaped
 let (@@) f x = f x
-
-let output_strings io strings =
-    List.iter (fun s -> output_string io s; output_char io '\n') strings    
     
-let plain io pos strs = 
-    output_strings io strs
+let plain io pos str = 
+    output_string io str
 
-let cpp io pos strs =
+let cpp io pos str =
     ( fprintf io "# %d \"%s\"\n" pos.line (escaped pos.file)
-    ; output_strings io strs
+    ; output_string io str
     )
 
-let comment cstr io pos strs =
+let comment cstr io pos str =
     ( fprintf io "%s %s %d\n" cstr (escaped pos.file) pos.line
-    ; output_strings io strs
+    ; output_string io str
     )
 
 let formats =

@@ -3,11 +3,11 @@ exception NoSuchChunk of string
 exception Cycle of string
 
 type code = 
-    | Str of Tangle.position * string list
+    | Str of Tangle.position * string 
     | Ref of string
     
 type chunk = 
-    | Doc of string list
+    | Doc of string 
     | Code of string * code list
     
 type doc = chunk list

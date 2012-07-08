@@ -19,7 +19,7 @@ let position p =
 %token EOF AT
 %token <string> REF
 %token <string> DEF
-%token <Lexing.position * string list> STR
+%token <Lexing.position * string> STR
 
 %% /* rules below */
 
