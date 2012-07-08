@@ -10,13 +10,14 @@ let (@@) f x = f x
 let fprintf = Printf.fprintf
 
 let output_strings io prefix strings postfix =
-    let out s =
-        ( output_string io prefix 
-        ; output_string io s
-        ; output_string io postfix
-        )
+    let rec loop = function 
+        | []     -> ()
+        | [""]   -> ()
+        | [s]    -> output_string io prefix; output_string io s
+        | s::ss  -> output_string io prefix; output_string io s;
+                   output_string io postfix; loop ss    
     in
-        List.iter out strings 
+        loop strings 
         
     
 let plain_code io = function
@@ -26,7 +27,7 @@ let plain_code io = function
 let plain_chunk io = function
     | LP.Doc(strs)          -> output_strings io "" strs "\n"
     | LP.Code(name, code)   -> 
-        ( fprintf io "<<%s>>=\n" name
+        ( fprintf io "    <<%s>>=\n" name
         ; List.iter (plain_code io) code
         )
         
