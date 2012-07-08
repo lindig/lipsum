@@ -10,11 +10,11 @@ exception Cycle       of string
 
 
 type code =
-    | Str       of T.position * string
+    | Str       of T.position * string list
     | Ref       of string
 
 type chunk =
-    | Doc       of string
+    | Doc       of string list
     | Code      of string * code list
 
 type doc = chunk list
@@ -47,6 +47,7 @@ let make chunks =
     let t = List.fold_left add empty chunks in
         { t with chunks = List.rev t.chunks}
 
+let doc t = t.chunks
 
 let code_chunks t = 
     SM.fold (fun name _ names -> name::names) t.code []
@@ -88,7 +89,7 @@ let tangle t emit chunk =
  *)
 
 let excerpt s =
-    let str = String.escaped s in
+    let str = String.escaped @@ String.concat "\n" s in
     let len = String.length str in
         if len < 40 then str 
         else String.sub str 0 10 ^ "..." ^ String.sub str (len - 10) 10
