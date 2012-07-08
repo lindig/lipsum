@@ -24,7 +24,7 @@ sortlines: sortlines.c
 
 ## Types and Main Function
 		
-@ The idea is to read the file into memory, to build up an array of pointers
+The idea is to read the file into memory, to build up an array of pointers
 to each line in the file, to sort the array, and finally to emit the lines in
 sorting order using the sorted array.
 
@@ -38,11 +38,13 @@ sorting order using the sorted array.
 <<scan lines>>
 <<sort predicate cmp>>
 <<main function>>
+@ 
 
-@ Possible challenges include multiple numbers in a line and trying to avoid
-to scan lines multiple times for the detection of the last number.
+Possible challenges include multiple numbers in a line and trying to avoid to
+scan a line multiple times for the detection of the last number in it.
 
-The key data structure is `LINE`. It contains a pointer into the file, the length of the line and an `int n` for the value of last number in that line.
+The key data structure is `LINE`. It contains a pointer into the file, the
+length of the line and an `int n` for the value of last number in that line.
 
 <<type definitions>>=
 typedef struct line {
@@ -51,7 +53,9 @@ typedef struct line {
 	int  n;	/* sort key */
 } LINE;      
 
-@ The sort predicate on lines is defined by `cmp`. It derives a integer by subtracting the numbers belonging to two lines being compared.
+@ The sort predicate on lines is defined by `cmp`. It derives an integer by
+subtracting the numbers belonging to the two lines being compared. The sign of
+the integer signals the order to the sort function.
 
 <<sort predicate cmp>>=
 static int cmp(const LINE *x, const LINE *y)
@@ -102,14 +106,14 @@ int main (int argc, const char * argv[])
 
 ## Reading a file into memory
 
-@ Reading a file into memory requires to allocate the right amount of memory.
+Reading a file into memory requires to allocate the right amount of memory.
 We actually allocate one more byte and add a newline if the last line does not
 end with a newline already. This makes line scanning more regular. Otherwise
 we have to pay attention to errors as not being able to read the file or
 running out of memory.
 
 Function `readfile` returns a buffer allocated for the file and writes the
-size of the buffer to bufsize. ()
+size of the buffer to `bufsize`.
 
         
 <<read file into memory>>=
@@ -157,18 +161,20 @@ static char *readfile(const char *name, long *bufsize)
 
 The `scan_buffer` routine scans the buffer byte by byte and each line it finds
 it adds to a `LINE` struct. Since we can't know the number of lines, an
-initial number `m` is guessed. When it is exceeded, twice as many are
-allocated (and again and again if necessary).
+initial number `m` is guessed. When it is exceeded, ``2*m`` are
+allocated (and again doubling if necessary).
 
-The tricky bit is to recognize the last number (and sort key) in the line and
+The tricky bit is to recognize the last number (and sort key) in a line and
 entering it into the `LINE` struct. Rather than relying to `atoi(3)` I'm using
 a small hack `C2I` that computes the value of a single digit and from there
 computes the number when we find more digits.
 
-We we find a new number we never know wether it is the last number in a line.
-Hence we read it but overwrite the previous result. The `outside` flag is
-true, if we are outside a sequence of digits and hence we can go a little
+When we find a new number we never know wether it is the last number in a
+line. Hence we read it but overwrite any previous result. The `outside` flag
+is true, if we are outside a sequence of digits and if so we can go a little
 faster.
+
+We don't recognize negative numbers.
 
 <<scan lines>>=
 #define C2I(c) ((c - '0'))        
