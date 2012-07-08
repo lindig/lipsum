@@ -8,7 +8,7 @@ type position =
     ; offset: int
     }
     
-type t = out_channel -> position -> string -> unit
+type t = out_channel -> position -> string list -> unit
 
 val lookup  : string -> t (* NoSuchFormat *)
 val formats : string list

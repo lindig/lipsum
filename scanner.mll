@@ -22,7 +22,7 @@
     let return tok pos str strs = 
         ( tok
         , pos
-        , String.concat "\n" @@ List.rev @@ (B.contents str) :: strs
+        , List.rev @@ (B.contents str) :: strs
         )
 
 
@@ -102,7 +102,7 @@ let to_string = function
     | P.DEF(s)      -> Printf.sprintf "<<%s>>=" s
     | P.REF(s)      -> Printf.sprintf "<<%s>>" s
     | P.AT          -> "@"
-    | P.STR(_,s)    -> excerpt s
+    | P.STR(_,strs) -> excerpt @@ String.concat "\n" strs
 
 
 let next = ref None
