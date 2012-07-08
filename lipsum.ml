@@ -94,6 +94,9 @@ let parse lexbuf =
 let tangle fmt chunk lexbuf =
     LP.tangle (litprog lexbuf) (T.lookup fmt) chunk
 
+let weave lexbuf =
+    Weave.plain stdout @@ LP.doc @@ litprog lexbuf
+
 let chunks lexbuf =
     List.iter print_endline @@ LP.code_chunks @@ litprog lexbuf
 
@@ -146,9 +149,7 @@ let main () =
         | "chunks"::args    -> scan_and_process chunks @@ path args
         | "roots"::args     -> scan_and_process roots @@ path args
         | "prepare"::args   -> scan_and_process escape @@ path args
-        (*
-        | "weave"::args     -> scan_and_process weave @@ path args
-        *)
+        | "weave"::args     -> scan_and_process weave @@ path args        
         | "help"::_             -> help stdout; exit 0
         | "-help"::_            -> help stdout; exit 0
         | "copyright"::_        -> copyright (); exit 0

@@ -1,7 +1,7 @@
 
 exception NoSuchFormat of string
 
-type t = out_channel -> Litprog.chunk list -> unit
+type t = out_channel -> Litprog.doc -> unit
 
 val lookup  : string -> t (* NoSuchFormat *)
 val formats : string list

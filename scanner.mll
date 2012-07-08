@@ -22,11 +22,11 @@
     let return tok pos str = (tok,pos,B.contents str)
     let (@@) f x = f x
 
-    (* col0 is true, iff a match starts at the beginning of a line *)
-    let col0 lexbuf = 
+    (* col 0 is true, iff a match starts at the beginning of a line *)
+    let col n lexbuf  = 
         let p = lexbuf.L.lex_start_p
         in
-            p.L.pos_cnum = p.L.pos_bol
+            p.L.pos_cnum + n = p.L.pos_bol
 
 }
 
@@ -38,20 +38,25 @@ rule token pos str = parse
     | "<<"                      { let x   = name (Buffer.create 40) lexbuf in
                                     return x pos str
                                 }
-    | "@ "                      { if col0 lexbuf                   
+    | "@ "                      { if col 0 lexbuf                   
                                   then return P.AT pos str               
                                   else  ( B.add_string str (get lexbuf)     
                                         ; token pos str lexbuf         
                                         )                          
                                 }                                 
     | "@\n"                     { new_line lexbuf;
-                                  if col0 lexbuf                   
+                                  if col 0 lexbuf                   
                                   then return P.AT pos str               
                                   else  ( B.add_string str (get lexbuf)
                                         ; token pos str lexbuf         
                                         )                          
-                                }  
-    | "@@"                      { (if col0 lexbuf
+  
+                                } 
+   (*
+    | "\n@ "                    { new_line lexbuf; return P.AT pos str }
+    *)
+    
+    | "@@"                      { (if col 0 lexbuf
                                    then  B.add_char str '@' 
                                    else  B.add_string str "@@");
                                   token pos str lexbuf
@@ -77,8 +82,9 @@ and name str = parse
     | "@@>>="                   { B.add_string str "@>>="; name str lexbuf }
     | ">>"                      { P.REF (B.contents str) }
     | ">>="                     { P.DEF (B.contents str) }
-    (* special case - eat up newline. Is this a good idea? *)
+    (* special case - eat up newline. Is this a good idea? No!
     | ">>=\n"                   { new_line lexbuf; P.DEF (B.contents str)}
+    *)
     | _                         { B.add_char str (getchar lexbuf 0)
                                 ; name str lexbuf                 
                                 }

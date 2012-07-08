@@ -4,31 +4,28 @@ module LP = Litprog
 
 exception NoSuchFormat of string
 
-type t = out_channel -> LP.chunk list -> unit
+type t = out_channel -> LP.doc -> unit
 
 let (@@) f x = f x
-let fprintf = Printf.fprintf
+let fprintf  = Printf.fprintf
 
-let output_strings io prefix strings postfix =
-    let rec loop = function 
-        | []     -> ()
-        | [""]   -> ()
-        | [s]    -> output_string io prefix; output_string io s
-        | s::ss  -> output_string io prefix; output_string io s;
-                   output_string io postfix; loop ss    
-    in
-        loop strings 
-        
-    
+
+let output_code io =
+    String.iter (function
+        | '\n' -> output_string io "\n    "
+        |  c   -> output_char io c
+        )        
+            
 let plain_code io = function
-    | LP.Str(_,strs) -> output_strings io "    " strs "\n"
-    | LP.Ref(str)    -> fprintf io "<<%s>>" str   
+    | LP.Str(_,str) -> output_code io str
+    | LP.Ref(str)   -> fprintf io "<<%s>>" str   
 
 let plain_chunk io = function
-    | LP.Doc(strs)          -> output_strings io "" strs "\n"
+    | LP.Doc(str)           -> output_string io str
     | LP.Code(name, code)   -> 
-        ( fprintf io "    <<%s>>=\n" name
+        ( fprintf io "    <<%s>>=" name
         ; List.iter (plain_code io) code
+        ; output_char io '\n'
         )
         
 let plain io chunks = List.iter (plain_chunk io) chunks
