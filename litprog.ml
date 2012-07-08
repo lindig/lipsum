@@ -47,6 +47,7 @@ let make chunks =
     let t = List.fold_left add empty chunks in
         { t with chunks = List.rev t.chunks}
 
+let doc t = t.chunks
 
 let code_chunks t = 
     SM.fold (fun name _ names -> name::names) t.code []
