@@ -19,6 +19,12 @@
         let p = position lexbuf in
         Printf.kprintf (fun msg -> raise (Error (p^" "^msg))) fmt
 
+        
+    let warning lexbuf fmt = 
+            let p = position lexbuf in
+            let s = Printf.sprintf fmt in
+                prerr_endline ("warning "^p^" "^s)
+            
     let return tok pos str = (tok,pos,B.contents str)
     let (@@) f x = f x
 
@@ -50,8 +56,12 @@ rule token pos str = parse
                                   else  ( B.add_string str (get lexbuf)
                                         ; token pos str lexbuf         
                                         )                          
-  
                                 } 
+    | "@>>"                     { warning lexbuf "spurious @>>?"
+                                ; B.add_string str (get lexbuf)
+                                ; token pos str lexbuf
+                                }                            
+                                
    (*
     | "\n@ "                    { new_line lexbuf; return P.AT pos str }
     *)
