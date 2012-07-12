@@ -95,7 +95,7 @@ let tangle fmt chunk lexbuf =
     LP.tangle (litprog lexbuf) (T.lookup fmt) chunk
 
 let weave lexbuf =
-    Weave.plain stdout @@ LP.doc @@ litprog lexbuf
+    (Weave.lookup "plain") stdout @@ LP.doc @@ litprog lexbuf
 
 let chunks lexbuf =
     List.iter print_endline @@ LP.code_chunks @@ litprog lexbuf
