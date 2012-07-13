@@ -22,7 +22,7 @@ let plain io pos str =
     output_string io str
 
 let cpp io pos str =
-    ( fprintf io "# %d \"%s\"\n" pos.line (escaped pos.file)
+    ( fprintf io "\n# %d \"%s\"\n" pos.line (escaped pos.file)
     ; output_string io str
     )
 

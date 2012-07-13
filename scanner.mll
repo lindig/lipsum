@@ -92,9 +92,8 @@ and name str = parse
     | "@@>>="                   { B.add_string str "@>>="; name str lexbuf }
     | ">>"                      { P.REF (B.contents str) }
     | ">>="                     { P.DEF (B.contents str) }
-    (* special case - eat up newline. Is this a good idea? No!
+    (* special case - eat up newline. Is this a good idea? *)
     | ">>=\n"                   { new_line lexbuf; P.DEF (B.contents str)}
-    *)
     | _                         { B.add_char str (getchar lexbuf 0)
                                 ; name str lexbuf                 
                                 }
