@@ -103,6 +103,9 @@ let chunks lexbuf =
 let roots lexbuf =
     List.iter print_endline @@ LP.code_roots @@ litprog lexbuf
 
+let check lexbuf =
+    List.iter print_endline @@ LP.unknown_references @@ litprog lexbuf
+
 let help io =
     let print_endline s = (output_string io s; output_char io '\n') in
     let this = "lipsum" in
@@ -112,6 +115,7 @@ let help io =
     ; this^" help                               emit help to stdout"
     ; this^" roots [file.lp]                    list root chunks"
     ; this^" chunks [file.lp]                   list all chunks"
+    ; this^" check [file.lp]                    emit undefined code chunks"
     ; this^" tangle [-f fmt] file.c [file.lp]   extract file.c from file.lp"
     ; this^" tangle -f                          show tangle formats available"
     ; this^" prepare [file]                     prepare file to be used as chunk"
@@ -150,6 +154,7 @@ let main () =
         | "roots"::args     -> scan_and_process roots @@ path args
         | "prepare"::args   -> scan_and_process escape @@ path args
         | "weave"::args     -> scan_and_process weave @@ path args        
+        | "check"::args     -> scan_and_process check @@ path args        
         | "help"::_             -> help stdout; exit 0
         | "-help"::_            -> help stdout; exit 0
         | "copyright"::_        -> copyright (); exit 0

@@ -64,6 +64,23 @@ let code_roots t =
     in
         SS.elements @@ List.fold_left traverse_chunk roots t.chunks
 
+let references t = 
+    let code refs = function
+        | Str(_)        -> refs
+        | Ref(r)        -> SS.add r refs in
+    let chunk refs = function
+        | Doc(_)        -> refs
+        | Code(_,cs)    -> List.fold_left code refs cs 
+    in
+        List.fold_left chunk SS.empty t.chunks
+
+let unknown_references t =
+    let (++) = SS.add in
+    let (--) = SS.diff in
+    let refs = references t in
+    let defs = SM.fold (fun name _ names -> name ++ names) t.code SS.empty in
+        SS.elements @@ refs -- defs 
+
 let lookup name map =
     try
         SM.find name map

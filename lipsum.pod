@@ -20,6 +20,8 @@ B<lipsum> B<tangle> B<-f>
 
 B<lipsum> B<roots> [I<file.lp>]
 
+B<lipsum> B<check> [I<file.lp>]
+
 B<lipsum> B<chunks> [I<file.lp>]
 
 B<lipsum> B<weave> [I<file.lp>]
@@ -66,6 +68,10 @@ languages that use C<#> to start a comment.
 
 List the name of all root code chunks, one per line. A root chunk is a chunk
 that is not part of another code chunk.
+
+=item B<check> [I<file.lp>]
+
+List code chunks that are referenced but not defined, one per line.
 
 =item B<chunks> [I<file.lp>]
 
