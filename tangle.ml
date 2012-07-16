@@ -32,13 +32,14 @@ let comment cstr io pos str =
     )
 
 let formats =
-    List.fold_left (fun map (key,v) -> SM.add key v map) SM.empty
-    [ "plain", plain
-    ; "cpp", cpp
-    ; "postscript", comment "%"
-    ; "tex", comment "%"
-    ; "ruby", comment "#"
-    ; "shell", comment "#"
+    let add map (keys,value) = 
+        List.fold_left (fun m k -> SM.add k value m) map keys
+    in
+    List.fold_left add SM.empty
+    [ ["plain"], plain
+    ; ["cpp";"c";"cxx";"h"], cpp
+    ; ["postscript";"ps";"eps";"tex";"latex"], comment "%"
+    ; ["ruby";"rb";"shell";"sh"], comment "#"
     ]
 
 let lookup fmt = 
