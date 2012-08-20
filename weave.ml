@@ -24,17 +24,20 @@ module Markdown = struct
     let chunk io = function
         | LP.Doc(str)           -> output_string io str
         | LP.Code(name, src)   -> 
-            ( fprintf io "    <<%s>>=" name
+            ( output_code io @@ Printf.sprintf "    <<%s>>=\n" name
             ; List.iter (code io) src
             ; output_char io '\n'
             )
         
     let weave io chunks = List.iter (chunk io) chunks
 end
-    
+
 let formats =
-    List.fold_left (fun map (key,v) -> SM.add key v map) SM.empty
-    [ "plain", Markdown.weave
+    let add map (keys,value) = 
+        List.fold_left (fun m k -> SM.add k value m) map keys
+    in
+    List.fold_left add SM.empty
+    [ ["plain";"markdown"], Markdown.weave
     ]
 
 let lookup fmt = 
