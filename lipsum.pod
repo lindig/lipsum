@@ -38,7 +38,7 @@ B<lipsum> B<copyright>
 B<Lipsum> is a tool for literate programming in the tradition of NoWeb and
 Sweave. A literate program is a file that contains both documentation and
 source code which are separated by a lightweight markup. B<lipsum>'s primary
-task is to extract the source from from a literate program to make it
+task is to extract the source from a literate program to make it
 available for compilation and execution. This is traditionally called
 I<tangling>. B<Lipsum> is language agnostic and can be used with almost any
 programming language and documentation syntax.
@@ -55,10 +55,10 @@ to I<stdout>.
 
 =item B<tangle> [B<-f> I<fmt>] I<chunk> [I<file.lp>]
 
-Extract I<chunk> from I<file.lp> and emit it to I<stdout>. Commands B<chunks>
-and B<roots> list the available chunks. The extracted code optionally
-includes references to  original source code locations in I<file.lp>. For
-a list of available formats, use B<tangle -f>.
+Extract I<chunk> from I<file.lp> and emit it to I<stdout>. Commands
+B<chunks> and B<roots> list the available chunks. The extracted code
+optionally includes references to  original source code locations in
+I<file.lp>. For a list of available formats, use B<tangle -f>.
 
 =item B<tangle> B<-f>
 
@@ -93,7 +93,7 @@ existing code into a literate program.
 
 =item B<help> | B<-help>
 
-Emits a short help message to stderr. The help message includes a few 
+Emits a short help message to I<stderr>. The help message includes a few 
 additional commands that are not listed here because they are intended
 for debugging.
 
