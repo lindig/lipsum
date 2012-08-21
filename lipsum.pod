@@ -55,10 +55,10 @@ to I<stdout>.
 
 =item B<tangle> [B<-f> I<fmt>] I<chunk> [I<file.lp>]
 
-Extract I<chunk> from I<file.lp> and emit it to I<stdout>. Commands
-B<chunks> and B<roots> list the available chunks. The extracted code
-optionally includes references to  original source code locations in
-I<file.lp>. For a list of available formats, use B<tangle -f>.
+Extract I<chunk> from I<file.lp> and emit it to I<stdout>. Commands B<chunks>
+and B<roots> list the available chunks. The extracted code optionally
+includes references to  original source code locations in I<file.lp>. For
+a list of available formats, use B<tangle -f>.
 
 =item B<tangle> B<-f>
 
