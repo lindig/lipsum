@@ -48,3 +48,4 @@ lipsum: lipsum.native
 	$(POD2MAN) $< > $@
 
 FORCE:
+
