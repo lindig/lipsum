@@ -78,7 +78,8 @@ let unknown_references t =
     let (++) = SS.add in
     let (--) = SS.diff in
     let refs = references t in
-    let defs = SM.fold (fun name _ names -> name ++ names) t.code SS.empty in
+    let defs = SM.fold 
+                (fun name _ names -> name ++ names) t.code SS.empty in
         SS.elements @@ refs -- defs 
 
 let lookup name map =
@@ -88,10 +89,10 @@ let lookup name map =
         Not_found -> raise (NoSuchChunk name)
 
 
-let tangle t emit chunk =
+let tangle t emit io chunk =
     let rec loop pred = function
         | []                  -> ()
-        | Str(pos,s)::todo    -> emit stdout pos s; loop pred todo
+        | Str(pos,s)::todo    -> emit io pos s; loop pred todo
         | Ref(s)::todo        ->
             if SS.mem s pred then
                 raise (Cycle s)
@@ -112,7 +113,8 @@ let excerpt s =
         else String.sub str 0 10 ^ "..." ^ String.sub str (len - 10) 10
              
 let code = function
-    | Str(p,str) -> printf "%3d (%4d): %s\n" p.T.line p.T.offset (excerpt str)
+    | Str(p,str) -> printf "%3d (%4d): %s\n" 
+                        p.T.line p.T.offset (excerpt str)
     | Ref(str)   -> printf "<<%s>>\n"        str
             
 let chunk map = function 
