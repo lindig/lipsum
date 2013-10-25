@@ -16,7 +16,7 @@ let (@@) f x = f x
 let copyright () =
     List.iter print_endline
     [ giturl
-    ; "Copyright (c) 2012, Christian Lindig <lindig@gmail.com>"
+    ; "Copyright (c) 2012, 2013, Christian Lindig <lindig@gmail.com>"
     ; "All rights reserved."
     ; ""
     ; "Redistribution and use in source and binary forms, with or"
@@ -84,15 +84,21 @@ let scan lexbuf =
 let escape lexbuf = 
     Escape.escape stdout lexbuf
 
-let litprog lexbuf =
-    let ast = P.litprog S.token' lexbuf in
-        LP.make ast
+let litprog lexbuf  = LP.make @@ P.litprog S.token' lexbuf
+let parse lexbuf    = LP.print @@ litprog lexbuf
 
-let parse lexbuf =
-    LP.print @@ litprog lexbuf
+let tangle_to_file lp fmt chunk =
+    finally (fun io -> LP.tangle lp fmt io chunk) 
+            (open_out chunk) close_out
+
+let tangle_roots fmt lexbuf =
+    let lp    = litprog lexbuf   in
+    let fmt   = T.lookup fmt     in
+    let roots = LP.code_roots lp in
+        List.iter (tangle_to_file lp fmt) roots
 
 let tangle fmt chunk lexbuf =
-    LP.tangle (litprog lexbuf) (T.lookup fmt) chunk
+    LP.tangle (litprog lexbuf) (T.lookup fmt) stdout chunk
 
 let weave lexbuf =
     (Weave.lookup "plain") stdout @@ LP.doc @@ litprog lexbuf
@@ -112,23 +118,23 @@ let help io =
     List.iter print_endline 
     [ this^" is a utility for literate programming"
     ; ""
-    ; this^" help                               emit help to stdout"
-    ; this^" roots [file.lp]                    list root chunks"
-    ; this^" chunks [file.lp]                   list all chunks"
-    ; this^" check [file.lp]                    emit undefined code chunks"
+    ; this^" help                       emit help to stdout"
+    ; this^" roots [file.lp]            list root chunks"
+    ; this^" chunks [file.lp]           list all chunks"
+    ; this^" check [file.lp]            emit undefined code chunks"
     ; this^" tangle [-f fmt] file.c [file.lp]   extract file.c from file.lp"
-    ; this^" tangle -f                          show tangle formats available"
-    ; this^" prepare [file]                     prepare file to be used as chunk"
-    ; this^" copyright                          display copyright notice"
+    ; this^" tangle -f                  show tangle formats available"
+    ; this^" prepare [file]             prepare file to be used as chunk"
+    ; this^" copyright                  display copyright notice"
     ; ""
     ; "See the manual lipsum(1) for documentation."
     ; ""
     ; "Debugging commands:"
-    ; this^" scan [file.lp]                     tokenize file and emit tokens"
-    ; this^" parse [file.lp]                    parse file and emit it"
+    ; this^" scan [file.lp]             tokenize file and emit tokens"
+    ; this^" parse [file.lp]            parse file and emit it"
     ; ""
     ; giturl
-    ; "Copyright (c) 2012 Christian Lindig <lindig@gmail.com>"
+    ; "Copyright (c) 2012, 2013 Christian Lindig <lindig@gmail.com>"
     ]
 
 let tangle_formats () =
@@ -146,9 +152,10 @@ let main () =
         match args with
         | "scan" ::args     -> scan_and_process scan  @@ path args
         | "parse"::args     -> scan_and_process parse @@ path args
-        | "expand"::s::args -> scan_and_process (tangle "plain" s) @@ path args
+        | "expand"::"-f"::fmt::args -> 
+                scan_and_process (tangle_roots fmt) @@ path args
         | "tangle"::"-f"::fmt::chunk::args -> 
-                               scan_and_process (tangle fmt chunk) @@ path args
+                scan_and_process (tangle fmt chunk) @@ path args
         | "tangle"::"-f"::[]-> tangle_formats ()
         | "tangle"::s::args -> scan_and_process (tangle "plain" s) @@ path args
         | "chunks"::args    -> scan_and_process chunks @@ path args
@@ -167,14 +174,15 @@ let () =
     try 
         main (); exit 0
     with 
-        | Error(msg)         -> eprintf "error: %s\n" msg; exit 1
-        | Failure(msg)       -> eprintf "error: %s\n" msg; exit 1
-        | Scanner.Error(msg) -> eprintf "error: %s\n" msg; exit 1
-        | Sys_error(msg)     -> eprintf "error: %s\n" msg; exit 1
-        | T.NoSuchFormat(s)  -> eprintf "unknown tangle format %s\n" s; exit 1
-        | LP.NoSuchChunk(msg)-> eprintf "no such chunk: %s\n" msg; exit 1
-        | LP.Cycle(s)        -> eprintf "chunk <<%s>> is part of a cycle\n" s;
-                                exit 1
-        (*
-        | _                  -> Printf.eprintf "some unknown error occurred\n"; exit 1  
-        *)
+    | Error(msg)         -> eprintf "error: %s\n" msg; exit 1
+    | Failure(msg)       -> eprintf "error: %s\n" msg; exit 1
+    | Scanner.Error(msg) -> eprintf "error: %s\n" msg; exit 1
+    | Sys_error(msg)     -> eprintf "error: %s\n" msg; exit 1
+    | T.NoSuchFormat(s)  -> eprintf "unknown tangle format %s\n" s; exit 1
+    | LP.NoSuchChunk(msg)-> eprintf "no such chunk: %s\n" msg; exit 1
+    | LP.Cycle(s)        -> eprintf "chunk <<%s>> is part of a cycle\n" s;
+                            exit 1
+    (*
+    | _                  -> Printf.eprintf "some unknown error occurred\n"; 
+                            exit 1  
+    *)
