@@ -4,10 +4,10 @@
 Lipsum is a command-line utility for literate programming. It stands in the
 tradition of [Noweb](http://www.cs.tufts.edu/~nr/noweb/), a popular and
 flexible literate programming system by Norman Ramsey. The idea of literate
-programming is to keep documentation for programmers and program code in one
-file and to arrange it in a way that helps understanding it best. To actually
-compile or run the code it needs to be extracted from the literate program and
-Lipsum is a tool to do this.
+programming is to keep documentation for programmers and program code in
+one file and to arrange it in a way that helps understanding it best. To
+actually compile or run the code it needs to be extracted from the literate
+program and Lipsum is a tool to do this.
 
 Like Noweb, Lipsum employs a minimal markup to arrange documentation and code
 in a file. Also like Noweb, Lipsum is language agnostic and can be used for
@@ -72,8 +72,8 @@ typeset with LaTeX.
 ## Why not using Noweb?
 
 Noweb is a great tool with a flexible architecture that permits a user to plug
-in filters to extend it. This also makes its installation depend on various
-filters that are part of its distribution that are written in various
+in filters to extend it. This makes its installation depend on various
+filters that are part of its distribution and that are written in various
 languages. While this is usually not a problem if you develop code mostly for
 yourself, it adds one more dependency if you want to release code as
 open source.
@@ -105,9 +105,9 @@ binary and the manual are getting installed.
 ## Documentation
 
 Lipsum comes with a Unix manual page `lipsum.1` that is generated from
-[`lipsum.pod`](lipsum/blob/master/lipsum.pod). POD is a simple markup language, much
-like Markdown, that is used by the Perl community. To view the manual page
-prior to installation use `nroff`:
+[`lipsum.pod`](lipsum/blob/master/lipsum.pod). POD is a simple markup
+language, much like Markdown, that is used by the Perl community. To view
+the manual page prior to installation use `nroff`:
 
         $ nroff -man lipsum.1 | less
         
@@ -119,11 +119,12 @@ https://github.com/lindig/lipsum.git
 
 ## License
 
-Lipsum is distributed under the BSD-2 license. The license can be also displayed by the program:
+Lipsum is distributed under the BSD-2 license. The license can be also
+displayed by the program:
 
         $ lipsum copyright
 
-        Copyright (c) 2012, Christian Lindig <lindig@gmail.com>
+        Copyright (c) 2012, 2013, Christian Lindig <lindig@gmail.com>
         All rights reserved.
 
         Redistribution and use in source and binary forms, with or
