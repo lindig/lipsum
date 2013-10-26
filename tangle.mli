@@ -17,12 +17,12 @@ type position =
     ; offset:   int     (** byte offset from beginning of source file *)
     }
 
-(** emits code originating from position to output channel *)
 type t = out_channel -> position -> string -> unit
+(** emits code originating from position to output channel *)
 
 (** available formats *)
 val lookup  : string -> t (* NoSuchFormat *)
 val formats : string list
 
-(** a very basic formatter *)
 val plain   : t
+(** a very basic formatter *)

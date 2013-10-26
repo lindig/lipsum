@@ -5,8 +5,12 @@
 
 exception NoSuchFormat of string (** requested format doesn't exist *)
 
-type t = out_channel -> Litprog.doc -> unit (* emit doc to channel *)
+type t = out_channel -> Litprog.doc -> unit 
+(* emit doc to channel *)
 
-val lookup  : string -> t (** lookup named format *)
-val formats : string list (** names of available formats *)
+val lookup  : string -> t 
+(** lookup named format *)
+
+val formats : string list 
+(** names of available formats *)
 

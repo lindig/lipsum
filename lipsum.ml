@@ -52,11 +52,11 @@ let copyright () =
     is called before return even in the presence of exceptions. However,
     exceptions in the cleanup function are not caught *)
 type 'a result = Success of 'a | Failed of exn
-let finally f x cleanup = 
+let finally: ('a -> 'b) -> 'a -> ('a -> unit) -> 'b = fun f x cleanup ->
     let result =
         try Success (f x) with exn -> Failed exn
     in
-        cleanup x; 
+        ignore @@ cleanup x; 
         match result with
         | Success y  -> y 
         | Failed exn -> raise exn
