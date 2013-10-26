@@ -1,3 +1,5 @@
+(** This is the main module that evaluates the command line and drives
+    the program. *)
 
 module S  = Scanner
 module P  = Parser
@@ -45,8 +47,11 @@ let copyright () =
     ; "POSSIBILITY OF SUCH DAMAGE."
     ]
 
-type 'a result = Success of 'a | Failed of exn
 
+(** finally calls a function and makes sure that a cleanup function 
+    is called before return even in the presence of exceptions. However,
+    exceptions in the cleanup function are not caught *)
+type 'a result = Success of 'a | Failed of exn
 let finally f x cleanup = 
     let result =
         try Success (f x) with exn -> Failed exn
@@ -56,6 +61,9 @@ let finally f x cleanup =
         | Success y  -> y 
         | Failed exn -> raise exn
 
+(** Attach a file name to the input source that we are reading. This is
+    most useful when we are reading from stdin and no file name
+    was attached *)
 let set_fname lexbuf fname =
     ( lexbuf.Lexing.lex_curr_p <-  
         { lexbuf.Lexing.lex_curr_p with Lexing.pos_fname = fname }

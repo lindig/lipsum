@@ -22,7 +22,7 @@ module Markdown = struct
         | LP.Ref(str)   -> fprintf io "<<%s>>" str   
 
     let chunk io = function
-        | LP.Doc(str)           -> output_string io str
+        | LP.Doc(str)          -> output_string io str
         | LP.Code(name, src)   -> 
             ( output_code io @@ Printf.sprintf "    <<%s>>=\n" name
             ; List.iter (code io) src
