@@ -66,6 +66,12 @@ Emit list of available source code position formats. The best known format
 is C<cpp> as it is used by the C preprocessor cpp(1) and works for many 
 languages that use C<#> to start a comment.
 
+=item B<expand> [B<-f> I<fmt>] [I<file.lp>]
+
+Extract each root code chunk to a file of the same name using format
+I<fmt>. This is a quick way extract all code chunks in one go into
+individual files.
+
 =item B<roots> [I<file.lp>]
 
 List the name of all root code chunks, one per line. A root chunk is
@@ -103,12 +109,11 @@ Emit the copyright notice and license to I<stdout>.
 
 =back
 
-
 =head1 FILE FORMAT
 
 A literate program as it is understood by B<lipsum> is a sequence of
 documentation and code chunks. Code chunks are named and may include
-reference to other code chunks. Command B<chunks> lists all available
+references to other code chunks. Command B<chunks> lists all available
 chunks in a file.  Below is a simple example:
 
     Echo prints each command line argument on a line by itself. This 
@@ -233,7 +238,9 @@ close the chunk name properly with >> or >>=.
 
 =head1 UNICODE
 
-Lipsum is not unicode aware but should work with UTF8 files regardless.
+Lipsum is not unicode aware but should work with UTF8 files regardless. If
+you have suggestions how to make Lipsum unicode aware the author would be
+interested to hear about them.
 
 =head1 RETURN VALUES
 
