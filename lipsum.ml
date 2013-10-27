@@ -74,7 +74,7 @@ let set_filename (fname:string) (lexbuf:Lexing.lexbuf)  =
 (** Open a named file (or stdin), setup a lexer and call f on the lexer for
     the result. If a file was opened, it is closed before the result 
     is returned *)
-let scan_and_process (f: Lexing.lexbuf -> 'a) = function
+let apply (f: Lexing.lexbuf -> 'a) = function
     | None      -> f @@ set_filename "stdin" @@ Lexing.from_channel stdin 
     | Some path -> 
         let io      = open_in path in
@@ -164,24 +164,32 @@ let path = function
     | [path]    -> Some path 
     | args      -> error "expected a single file name but found %d" 
                         (List.length args) 
+
+let plain = tangle "plain"
+
+let tangle_cmd = function
+    | "-f"::fmt::chunk::paths -> apply (tangle fmt chunk) (path paths)
+    | "-f"::[]                -> tangle_formats ()
+    | chunk::paths            -> apply (plain chunk) (path paths)
+    | _                       -> help stderr; exit 1
+
+let expand_cmd = function
+    | "-f"::fmt::paths  -> apply (tangle_roots fmt) (path paths)
+    | paths             -> apply (tangle_roots "plain") (path paths)  
       
 let main () =
     let argv    = Array.to_list Sys.argv in
     let args    = List.tl argv in
         match args with
-        | "scan" ::args     -> scan_and_process scan  @@ path args
-        | "parse"::args     -> scan_and_process parse @@ path args
-        | "expand"::"-f"::fmt::args -> 
-                scan_and_process (tangle_roots fmt) @@ path args
-        | "tangle"::"-f"::fmt::chunk::args -> 
-                scan_and_process (tangle fmt chunk) @@ path args
-        | "tangle"::"-f"::[]-> tangle_formats ()
-        | "tangle"::s::args -> scan_and_process (tangle "plain" s) @@ path args
-        | "chunks"::args    -> scan_and_process chunks @@ path args
-        | "roots"::args     -> scan_and_process roots @@ path args
-        | "prepare"::args   -> scan_and_process escape @@ path args
-        | "weave"::args     -> scan_and_process weave @@ path args        
-        | "check"::args     -> scan_and_process check @@ path args        
+        | "scan" ::args     -> apply scan  @@ path args
+        | "parse"::args     -> apply parse @@ path args
+        | "tangle" :: args  -> tangle_cmd args
+        | "expand" :: args  -> expand_cmd args
+        | "chunks"::args    -> apply chunks @@ path args
+        | "roots"::args     -> apply roots @@ path args
+        | "prepare"::args   -> apply escape @@ path args
+        | "weave"::args     -> apply weave @@ path args        
+        | "check"::args     -> apply check @@ path args        
         | "help"::_         -> help stdout; exit 0
         | "-help"::_        -> help stdout; exit 0
         | "copyright"::_    -> copyright (); exit 0
