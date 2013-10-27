@@ -65,7 +65,7 @@ let finally: ('a -> 'b) -> 'a -> ('a -> unit) -> 'b = fun f x cleanup ->
 (** Attach a file name to the input source that we are reading. This is
     most useful when we are reading from stdin and no file name
     was attached *)
-let set_filename (lexbuf:Lexing.lexbuf) (fname:string) =
+let set_filename (fname:string) (lexbuf:Lexing.lexbuf)  =
     ( lexbuf.Lexing.lex_curr_p <-  
         { lexbuf.Lexing.lex_curr_p with Lexing.pos_fname = fname }
     ; lexbuf
@@ -75,13 +75,12 @@ let set_filename (lexbuf:Lexing.lexbuf) (fname:string) =
     the result. If a file was opened, it is closed before the result 
     is returned *)
 let scan_and_process (f: Lexing.lexbuf -> 'a) = function
+    | None      -> f @@ set_filename "stdin" @@ Lexing.from_channel stdin 
     | Some path -> 
-        let io = open_in path in
-        let lexbuf = set_filename (Lexing.from_channel io) path in
-            finally f lexbuf (fun _ -> close_in io)
-    | None      -> 
-        let lexbuf = set_filename (Lexing.from_channel stdin) "stdin" in
-            f lexbuf
+        let io      = open_in path in
+        let close _ = close_in io in
+        let lexbuf  = set_filename path @@ Lexing.from_channel io in
+            finally f lexbuf close
             
 let scan lexbuf =
     let rec loop lexbuf =
@@ -131,7 +130,8 @@ let check lexbuf =
 
 let help io =
     let print_endline s = (output_string io s; output_char io '\n') in
-    let this = "lipsum" in
+    let this = "lipsum"  in
+    let spac = "      "  in
     List.iter print_endline 
     [ this^" is a utility for literate programming"
     ; ""
@@ -140,6 +140,8 @@ let help io =
     ; this^" chunks [file.lp]           list all chunks"
     ; this^" check [file.lp]            emit undefined code chunks"
     ; this^" tangle [-f fmt] file.c [file.lp]   extract file.c from file.lp"
+    ; this^" expand [-f fmt] [file.lp]  extract all root chunks from" 
+    ; spac^"                            file.lp to individual files"
     ; this^" tangle -f                  show tangle formats available"
     ; this^" prepare [file]             prepare file to be used as chunk"
     ; this^" copyright                  display copyright notice"
