@@ -116,6 +116,10 @@ let to_string = function
     | P.STR(_,s)    -> excerpt s
 
 
+(** See the file IMPLEMENTATION.md for an explanation. Function token' 
+    either returns the token stored in next, or calls the scanner which
+    returns two tokens. One is stored and the other one returned *)
+
 let next = ref None
 let token' lexbuf =
     let pos = lexbuf.L.lex_curr_p in

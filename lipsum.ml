@@ -5,6 +5,7 @@ module S  = Scanner
 module P  = Parser
 module LP = Litprog
 module T  = Tangle
+(** Establish short names for modules; this avoids opening them *)
 
 exception Error of string
 let error fmt = Printf.kprintf (fun msg -> raise (Error msg)) fmt
@@ -64,19 +65,22 @@ let finally: ('a -> 'b) -> 'a -> ('a -> unit) -> 'b = fun f x cleanup ->
 (** Attach a file name to the input source that we are reading. This is
     most useful when we are reading from stdin and no file name
     was attached *)
-let set_fname lexbuf fname =
+let set_filename (lexbuf:Lexing.lexbuf) (fname:string) =
     ( lexbuf.Lexing.lex_curr_p <-  
         { lexbuf.Lexing.lex_curr_p with Lexing.pos_fname = fname }
     ; lexbuf
     )
 
-let scan_and_process f = function
+(** Open a named file (or stdin), setup a lexer and call f on the lexer for
+    the result. If a file was opened, it is closed before the result 
+    is returned *)
+let scan_and_process (f: Lexing.lexbuf -> 'a) = function
     | Some path -> 
         let io = open_in path in
-        let lexbuf = set_fname (Lexing.from_channel io) path in
+        let lexbuf = set_filename (Lexing.from_channel io) path in
             finally f lexbuf (fun _ -> close_in io)
     | None      -> 
-        let lexbuf = set_fname (Lexing.from_channel stdin) "stdin" in
+        let lexbuf = set_filename (Lexing.from_channel stdin) "stdin" in
             f lexbuf
             
 let scan lexbuf =
@@ -89,14 +93,19 @@ let scan lexbuf =
     in
         loop lexbuf
 
-let escape lexbuf = 
-    Escape.escape stdout lexbuf
+let escape lexbuf   = Escape.escape stdout lexbuf
+(** read input and emit it again, escaping characters where needed
+    to turn this into a code chunk in a literate program *)
 
 let litprog lexbuf  = LP.make @@ P.litprog S.token' lexbuf
-let parse lexbuf    = LP.print @@ litprog lexbuf
+(** create a literate program by parsing the input *)
 
-let tangle_to_file lp fmt chunk =
-    finally (fun io -> LP.tangle lp fmt io chunk) 
+let parse lexbuf    = LP.print @@ litprog lexbuf
+(** emit a literate program for debugging *)
+
+(** expand chunk from litprog into a file named like chunk, using format *)
+let tangle_to_file (litprog:LP.t) (format:Tangle.t) (chunk:string) = 
+    finally (fun io -> LP.tangle litprog format io chunk) 
             (open_out chunk) close_out
 
 let tangle_roots fmt lexbuf =
@@ -171,11 +180,11 @@ let main () =
         | "prepare"::args   -> scan_and_process escape @@ path args
         | "weave"::args     -> scan_and_process weave @@ path args        
         | "check"::args     -> scan_and_process check @@ path args        
-        | "help"::_             -> help stdout; exit 0
-        | "-help"::_            -> help stdout; exit 0
-        | "copyright"::_        -> copyright (); exit 0
-        | []                    -> help stderr; exit 1
-        | _                     -> help stderr; exit 1
+        | "help"::_         -> help stdout; exit 0
+        | "-help"::_        -> help stdout; exit 0
+        | "copyright"::_    -> copyright (); exit 0
+        | []                -> help stderr; exit 1
+        | _                 -> help stderr; exit 1
 
 
 let () = 
