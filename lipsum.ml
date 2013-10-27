@@ -156,10 +156,9 @@ let help io =
     ; "Copyright (c) 2012, 2013 Christian Lindig <lindig@gmail.com>"
     ]
 
-let tangle_formats () =
-    print_endline @@ String.concat " " T.formats
- 
-let path = function 
+let tangle_formats () = print_endline @@ String.concat " " T.formats
+
+let optional = function (** We expect zero or one file names *) 
     | []        -> None 
     | [path]    -> Some path 
     | args      -> error "expected a single file name but found %d" 
@@ -168,28 +167,28 @@ let path = function
 let plain = tangle "plain"
 
 let tangle_cmd = function
-    | "-f"::fmt::chunk::paths -> apply (tangle fmt chunk) (path paths)
+    | "-f"::fmt::chunk::paths -> apply (tangle fmt chunk) (optional paths)
     | "-f"::[]                -> tangle_formats ()
-    | chunk::paths            -> apply (plain chunk) (path paths)
+    | chunk::paths            -> apply (plain chunk) (optional paths)
     | _                       -> help stderr; exit 1
 
 let expand_cmd = function
-    | "-f"::fmt::paths  -> apply (tangle_roots fmt) (path paths)
-    | paths             -> apply (tangle_roots "plain") (path paths)  
+    | "-f"::fmt::paths  -> apply (tangle_roots fmt) (optional paths)
+    | paths             -> apply (tangle_roots "plain") (optional paths)  
       
 let main () =
     let argv    = Array.to_list Sys.argv in
     let args    = List.tl argv in
         match args with
-        | "scan" ::args     -> apply scan  @@ path args
-        | "parse"::args     -> apply parse @@ path args
+        | "scan" ::args     -> apply scan  @@ optional args
+        | "parse"::args     -> apply parse @@ optional args
         | "tangle" :: args  -> tangle_cmd args
         | "expand" :: args  -> expand_cmd args
-        | "chunks"::args    -> apply chunks @@ path args
-        | "roots"::args     -> apply roots @@ path args
-        | "prepare"::args   -> apply escape @@ path args
-        | "weave"::args     -> apply weave @@ path args        
-        | "check"::args     -> apply check @@ path args        
+        | "chunks"::args    -> apply chunks @@ optional args
+        | "roots"::args     -> apply roots @@ optional args
+        | "prepare"::args   -> apply escape @@ optional args
+        | "weave"::args     -> apply weave @@ optional args        
+        | "check"::args     -> apply check @@ optional args        
         | "help"::_         -> help stdout; exit 0
         | "-help"::_        -> help stdout; exit 0
         | "copyright"::_    -> copyright (); exit 0
