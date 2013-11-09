@@ -1,7 +1,7 @@
 
 # This is a Unix manual page for Lipsum in Perl POD format. It is
-# translated into manual format using pod2perl which comes with Perl
-# installations. The POD format has some limitations but it is still one of
+# translated into manual format using pod2perl which comes with a Perl
+# installation. The POD format has some limitations but it is still one of
 # the easier ways to write a manual page. I take the limitations (no
 # tables, problems with escapes) in exchange for an easy way to update the
 # manual page.
@@ -62,9 +62,9 @@ I<file.lp>. For a list of available formats, use B<tangle -f>.
 
 =item B<tangle> B<-f>
 
-Emit list of available source code position formats. The best known format 
-is C<cpp> as it is used by the C preprocessor cpp(1) and works for many 
-languages that use C<#> to start a comment.
+Emit the list of available source code position formats. The best known
+format is C<cpp> as it is used by the C preprocessor cpp(1) and works for
+many languages that use C<#> to start a comment.
 
 =item B<expand> [B<-f> I<fmt>] [I<file.lp>]
 
@@ -257,8 +257,8 @@ notangle(1), cpp(1), http://daringfireball.net/projects/markdown/
 
 =head1 AUTHOR
 
-Written by Christian Lindig <lindig@gmail.com>. Source code available from 
-https://github.com/lindig/lipsum.git
+Written by Christian Lindig <lindig@gmail.com>. The source code available
+from https://github.com/lindig/lipsum.git
     
 =head1 LICENSE
 
