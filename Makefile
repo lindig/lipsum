@@ -13,7 +13,7 @@ INSTALL = install
 
 # OCaml - we rely on ocamlbuild for compilation
 
-OCB 	= ocamlbuild -yaccflag -v -cflag -annot
+OCB 	= ocamlbuild -I src -yaccflag -v -cflag -annot
 
 
 # high-level targets
