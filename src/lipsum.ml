@@ -5,6 +5,9 @@ module S  = Scanner
 module P  = Parser
 module LP = Litprog
 module T  = Tangle
+module RE = Re      (** regular expression   *)
+module G  = Re_glob (** shell-style globbing *)
+
 (** Establish short names for modules; this avoids opening them *)
 
 exception Error of string
@@ -46,6 +49,12 @@ let copyright () =
     ; "LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN"
     ; "ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE"
     ; "POSSIBILITY OF SUCH DAMAGE."
+    ; ""
+    ; "This program includes a library for regular expressions that"
+    ; "is available from https://github.com/ocaml/ocaml-re.git."
+    ; "It was released under the GNU LESSER GENERAL PUBLIC LICENSE"
+    ; "and was written by Jerome Vouillon "
+    ; "<Jerome.Vouillon@pps.univ-paris-diderot.fr>"
     ]
 
 

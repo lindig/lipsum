@@ -11,9 +11,12 @@ POD2MAN = pod2man $(PODOPTS)
 PODOPTS = --center="Christian Lindig" --name="lipsum" --release="2013"
 INSTALL = install
 
+# Libraries
+OCAMLRE = https://github.com/ocaml/ocaml-re.git
+
 # OCaml - we rely on ocamlbuild for compilation
 
-OCB 	= ocamlbuild -I src -yaccflag -v -cflag -annot
+OCB 	= ocamlbuild -I src -I ocaml-re/lib -yaccflag -v -cflag -annot
 
 
 # high-level targets
@@ -32,8 +35,10 @@ clean:
 	$(OCB) -clean
 	rm -f lipsum.1 lipsum
 
-#
+# -- update subtree
 
+update:
+	git subtree pull --prefix ocaml-re $(OCAMLRE) master --squash
 
 lipsum.native: FORCE
 	$(OCB) lipsum.native
