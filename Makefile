@@ -8,7 +8,7 @@ PREFIX  = $(HOME)
 BIN 	= $(PREFIX)/bin
 MAN1DIR = $(PREFIX)/man/man1
 POD2MAN = pod2man $(PODOPTS)
-PODOPTS = --center="Christian Lindig" --name="lipsum" --release="2012"
+PODOPTS = --center="Christian Lindig" --name="lipsum" --release="2013"
 INSTALL = install
 
 # OCaml - we rely on ocamlbuild for compilation
