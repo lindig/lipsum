@@ -17,6 +17,8 @@ lipsum - a simple literate programming utility
 
 B<lipsum> B<tangle> [B<-f> I<fmt>] I<chunk> [I<file.lp>]
 
+B<lipsum> B<expand> B<-f> I<fmt> I<glob> [I<file.lp>]
+
 B<lipsum> B<tangle> B<-f>
 
 B<lipsum> B<roots> [I<file.lp>]
@@ -66,11 +68,17 @@ Emit the list of available source code position formats. The best known
 format is C<cpp> as it is used by the C preprocessor cpp(1) and works for
 many languages that use C<#> to start a comment.
 
-=item B<expand> [B<-f> I<fmt>] [I<file.lp>]
+=item B<expand> B<-f> I<fmt> I<glob> [I<file.lp>]
 
-Extract each root code chunk to a file of the same name using format
-I<fmt>. This is a quick way extract all code chunks in one go into
-individual files.
+Extract each root code chunk matching shell pattern I<glob> to a file of
+the same name using format I<fmt>. This is a quick way extract all code
+chunks in one go into individual files. On shell command line, you have to
+quote the I<glob> pattern to avoid the shell expanding it:
+
+    $ lipsum -f cpp '*.[ch]' file.lp
+
+This will expand all chunks matching `*.c` or `*.h` using the cpp(1)
+format for back references into F<file.lp>.    
 
 =item B<roots> [I<file.lp>]
 

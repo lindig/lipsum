@@ -5,7 +5,7 @@ module S  = Scanner
 module P  = Parser
 module LP = Litprog
 module T  = Tangle
-module RE = Re      (** regular expression   *)
+module RX = Re      (** regular expression   *)
 module G  = Re_glob (** shell-style globbing *)
 
 (** Establish short names for modules; this avoids opening them *)
@@ -122,6 +122,20 @@ let tangle_roots fmt lexbuf =
     let roots = LP.code_roots lp in
         List.iter (tangle_to_file lp fmt) roots
 
+let compile glob =
+    try
+        RX.compile @@ G.globx glob 
+    with
+        G.Parse_error -> error "syntax error in pattern '%s'" glob
+
+let tangle_matching_roots fmt glob lexbuf =
+    (** only expand roots matching glob *)
+    let rx    = compile glob in (* rx can be used for matching a string *)
+    let lp    = litprog lexbuf in
+    let fmt   = T.lookup fmt in
+    let roots = List.filter (RX.execp rx) @@ LP.code_roots lp in
+        List.iter (tangle_to_file lp fmt) roots
+
 let tangle fmt chunk lexbuf =
     LP.tangle (litprog lexbuf) (T.lookup fmt) stdout chunk
 
@@ -149,8 +163,9 @@ let help io =
     ; this^" chunks [file.lp]           list all chunks"
     ; this^" check [file.lp]            emit undefined code chunks"
     ; this^" tangle [-f fmt] file.c [file.lp]   extract file.c from file.lp"
-    ; this^" expand [-f fmt] [file.lp]  extract all root chunks from" 
-    ; spac^"                            file.lp to individual files"
+    ; this^" expand -f fmt glob [file.lp]"  
+    ; spac^"                            extract all root chunks matching" 
+    ; spac^"                            pattern glob to individual files"
     ; this^" tangle -f                  show tangle formats available"
     ; this^" prepare [file]             prepare file to be used as chunk"
     ; this^" copyright                  display copyright notice"
@@ -175,6 +190,7 @@ let optional = function (** We expect zero or one file names *)
 
 let plain = tangle "plain"
 
+
 let tangle_cmd = function
     | "-f"::fmt::chunk::paths -> apply (tangle fmt chunk) (optional paths)
     | "-f"::[]                -> tangle_formats ()
@@ -182,8 +198,9 @@ let tangle_cmd = function
     | _                       -> help stderr; exit 1
 
 let expand_cmd = function
-    | "-f"::fmt::paths  -> apply (tangle_roots fmt) (optional paths)
-    | paths             -> apply (tangle_roots "plain") (optional paths)  
+    | "-f"::fmt::glob::paths  -> apply (tangle_matching_roots fmt glob) 
+                                        (optional paths)
+    | _                       -> help stderr; exit 1
       
 let main () =
     let argv    = Array.to_list Sys.argv in

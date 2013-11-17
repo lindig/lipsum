@@ -102,7 +102,9 @@ might want to adjust the `PREFIX` variable that controls where the lipsum
 binary and the manual are getting installed.
 
         $ make
-        $ make install
+        $ make install 
+        or
+        $ make PREFIX=/usr/local install
 
 The code inlcudes the ocaml-re library that comes with its own build
 system. However, we don't rely on it but simply tell ocamlbuild(1) where to
