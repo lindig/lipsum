@@ -72,13 +72,16 @@ many languages that use C<#> to start a comment.
 
 Extract each root code chunk matching shell pattern I<glob> to a file of
 the same name using format I<fmt>. This is a quick way extract all code
-chunks in one go into individual files. On shell command line, you have to
-quote the I<glob> pattern to avoid the shell expanding it:
+chunks in one go into individual files. On the shell command line, you have
+to quote the I<glob> pattern to avoid the shell expanding it:
 
     $ lipsum -f cpp '*.[ch]' file.lp
 
 This will expand all chunks matching `*.c` or `*.h` using the cpp(1)
 format for back references into F<file.lp>.    
+
+Note that pattern C<*> does not match a C</> and hence C<*.c> does not
+match C<a/b.c> but C<a/*.c> does.
 
 =item B<roots> [I<file.lp>]
 
