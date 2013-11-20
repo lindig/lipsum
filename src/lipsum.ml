@@ -124,7 +124,7 @@ let tangle_roots fmt lexbuf =
 
 let compile glob =
     try
-        RX.compile @@ G.globx glob 
+        RX.compile @@ RX.whole_string @@ G.globx glob 
     with
         G.Parse_error -> error "syntax error in pattern '%s'" glob
 
