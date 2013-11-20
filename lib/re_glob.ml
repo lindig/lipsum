@@ -17,7 +17,7 @@
 
    You should have received a copy of the GNU Lesser General Public
    License along with this library; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 *)
 
 exception Parse_error
@@ -34,7 +34,7 @@ let beg_start =
 let beg_start' =
   Re.seq [notdot; Re.rep gany]
 
-let glob_parse init s =
+let glob_parse ?anchored init s =
   let i = ref 0 in
   let l = String.length s in
   let eos () = !i = l in
@@ -103,7 +103,7 @@ let glob_parse init s =
     get ()
   in
   let res = expr () in
-  res
+  if anchored = None then res else Re.whole_string res
 
 let rec mul l l' =
   List.flatten (List.map (fun s -> List.map (fun s' -> s ^ s') l') l)
@@ -131,7 +131,9 @@ let explode str =
   in
   List.rev (fst (expl false 0 0 [] [""]))
 
-let glob' nodot s = glob_parse (if nodot then Beg else Mid) s
-let glob s = glob' true s
-let globx' nodot s = Re.alt (List.map (glob' nodot) (explode s))
-let globx s = globx' true s
+let glob' ?anchored nodot s =
+  glob_parse ?anchored (if nodot then Beg else Mid) s
+let glob ?anchored s = glob' ?anchored true s
+let globx' ?anchored nodot s =
+  Re.alt (List.map (glob' ?anchored nodot) (explode s))
+let globx ?anchored s = globx' ?anchored true s
