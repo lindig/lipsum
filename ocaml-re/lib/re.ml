@@ -17,7 +17,7 @@
 
    You should have received a copy of the GNU Lesser General Public
    License along with this library; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 *)
 
 let rec first f l =
@@ -770,6 +770,7 @@ let word r = seq [bow; r; eow]
 let not_boundary = Not_bound
 let bos = Beg_of_str
 let eos = End_of_str
+let whole_string r = seq [bos; r; eos]
 let leol = Last_end_of_line
 let start = Start
 let stop = Stop

@@ -17,7 +17,7 @@
 
    You should have received a copy of the GNU Lesser General Public
    License along with this library; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 *)
 
 type t              (* Regular expression *)
@@ -77,6 +77,7 @@ val start : t                          (* Initial position *)
 val stop : t                           (* Final position *)
 val word : t -> t                      (* Word *)
 val not_boundary : t                   (* Not at a word boundary *)
+val whole_string : t -> t              (* Only matches the whole string *)
 
 (* Match semantics *)
 val longest : t -> t                   (* Longest match *)
