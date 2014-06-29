@@ -113,7 +113,9 @@ let category re c =
   (* Special category for the last newline *)
   if c = re.lnl then cat_lastnewline lor cat_newline lor cat_not_letter else
   match re.col_repr.[c] with
-    'a'..'z' | 'A'..'Z' ->
+    (* Should match [cword] definition *)
+    'a'..'z' | 'A'..'Z' | '0'..'9' | '_' | '\170' | '\181' | '\186'
+  | '\192'..'\214' | '\216'..'\246' | '\248'..'\255' ->
       cat_letter
   | '\n' ->
       cat_not_letter lor cat_newline
@@ -301,7 +303,7 @@ let rec scan_str info s initial_state groups =
   else
     loop_no_mark info s pos last initial_state
 
-let match_str groups re s pos len =
+let match_str groups partial re s pos len =
   let slen = String.length s in
   let last = if len = -1 then slen else pos + len in
   let info =
@@ -324,7 +326,7 @@ let match_str groups re s pos len =
   let initial_state = find_initial_state re initial_cat in
   let st = scan_str info s initial_state groups in
   let res =
-    if st.idx = break then
+    if st.idx = break || partial then
       Automata.status st.desc
     else
       let final_cat =
@@ -440,9 +442,12 @@ let rec split s cm =
   | (i, j)::r -> cm.[i] <- '\001'; cm.[j + 1] <- '\001'; split r cm
 
 let cupper =
-  Cset.union (cseq 'A' 'Z') (Cset.union (cseq '\192' '\214') (cseq '\216' '\222'))
+  Cset.union (cseq 'A' 'Z')
+    (Cset.union (cseq '\192' '\214') (cseq '\216' '\222'))
 let clower = Cset.offset 32 cupper
-let calpha = cadd '\170' (cadd '\186' (Cset.union clower cupper))
+let calpha =
+  List.fold_right cadd ['\170'; '\181'; '\186'; '\223'; '\255']
+    (Cset.union clower cupper)
 let cdigit = cseq '0' '9'
 let calnum = Cset.union calpha cdigit
 let cword = cadd '_' calnum
@@ -490,6 +495,59 @@ let flatten_cmap cm =
 
 (**** Compilation ****)
 
+let rec equal x1 x2 =
+  match x1, x2 with
+    Set s1, Set s2 ->
+      s1 = s2
+  | Sequence l1, Sequence l2 ->
+      eq_list l1 l2
+  | Alternative l1, Alternative l2 ->
+      eq_list l1 l2
+  | Repeat (x1', i1, j1), Repeat (x2', i2, j2) ->
+      i1 = i2 && j1 = j2 && equal x1' x2'
+  | Beg_of_line, Beg_of_line
+  | End_of_line, End_of_line
+  | Beg_of_word, Beg_of_word
+  | End_of_word, End_of_word
+  | Not_bound, Not_bound
+  | Beg_of_str, Beg_of_str
+  | End_of_str, End_of_str
+  | Last_end_of_line, Last_end_of_line
+  | Start, Start
+  | Stop, Stop ->
+      true
+  | Sem (sem1, x1'), Sem (sem2, x2') ->
+      sem1 = sem2 && equal x1' x2'
+  | Sem_greedy (k1, x1'), Sem_greedy (k2, x2') ->
+      k1 = k2 && equal x1' x2'
+  | Group _, Group _ -> (* Do not merge groups! *)
+      false
+  | No_group x1', No_group x2' ->
+      equal x1' x2'
+  | Nest x1', Nest x2' ->
+      equal x1' x2'
+  | Case x1', Case x2' ->
+      equal x1' x2'
+  | No_case x1', No_case x2' ->
+      equal x1' x2'
+  | Intersection l1, Intersection l2 ->
+      eq_list l1 l2
+  | Complement l1, Complement l2 ->
+      eq_list l1 l2
+  | Difference (x1', x1''), Difference (x2', x2'') ->
+      equal x1' x2' && equal x1'' x2''
+  | _ ->
+      false
+
+and eq_list l1 l2 =
+  match l1, l2 with
+    [], [] ->
+      true
+  | x1 :: r1, x2 :: r2 ->
+      equal x1 x2 && eq_list r1 r2
+  | _ ->
+      false
+
 let sequence l =
   match l with
     [x] -> x
@@ -503,7 +561,7 @@ let rec merge_sequences l =
       merge_sequences (l' @ r)
   | Sequence (x :: y) :: r ->
       begin match merge_sequences r with
-        Sequence (x' :: y') :: r' when x = x' ->
+        Sequence (x' :: y') :: r' when equal x x' ->
           Sequence [x; Alternative [sequence y; sequence y']] :: r'
       | r' ->
           Sequence (x :: y) :: r'
@@ -735,6 +793,26 @@ let compile_1 regexp =
 
 (****)
 
+let rec anchored r =
+  match r with
+  | Sequence l ->
+      List.exists anchored l
+  | Alternative l ->
+      List.for_all anchored l
+  | Repeat (r, i, _) ->
+      i > 0 && anchored r
+  | Set _ | Beg_of_line | End_of_line | Beg_of_word | End_of_word
+  | Not_bound | End_of_str | Last_end_of_line | Stop
+  | Intersection _ | Complement _ | Difference _ ->
+      false
+  | Beg_of_str | Start ->
+      true
+  | Sem (_, r) | Sem_greedy (_, r) | Group r | No_group r | Nest r
+  | Case r | No_case r ->
+      anchored r
+
+(****)
+
 type t = regexp
 
 let str s =
@@ -825,7 +903,7 @@ let punct =
        rg '\123' '\126'; rg '\160' '\169'; rg '\171' '\180';
        rg '\182' '\185'; rg '\187' '\191'; char '\215'; char '\247']
 let space = alt [char ' '; rg '\009' '\013']
-let xdigit = alt [digit; rg 'a' 'f'; rg 'A' 'Z']
+let xdigit = alt [digit; rg 'a' 'f'; rg 'A' 'F']
 
 let case r = Case r
 let no_case r = No_case r
@@ -834,26 +912,27 @@ let no_case r = No_case r
 
 type substrings = (string * Automata.mark_infos * int array * int)
 
-let compile r = compile_1 (seq [shortest (rep any); group r])
+let compile r =
+  compile_1 (if anchored r then group r else seq [shortest (rep any); group r])
 
 let exec ?(pos = 0) ?(len = -1) re s =
   if pos < 0 || len < -1 || pos + len > String.length s then
     invalid_arg "Re.exec";
-  match match_str true re s pos len with
+  match match_str true false re s pos len with
     `Match substr -> substr
   | _             -> raise Not_found
 
 let execp ?(pos = 0) ?(len = -1) re s =
   if pos < 0 || len < -1 || pos + len > String.length s then
     invalid_arg "Re.execp";
-  match match_str false re s pos len with
+  match match_str false false re s pos len with
     `Match substr -> true
   | _             -> false
 
 let exec_partial ?(pos = 0) ?(len = -1) re s =
   if pos < 0 || len < -1 || pos + len > String.length s then
     invalid_arg "Re.exec_partial";
-  match match_str false re s pos len with
+  match match_str false true re s pos len with
     `Match _ -> `Full
   | `Running -> `Partial
   | `Failed  -> `Mismatch
