@@ -20,27 +20,50 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 *)
 
-(*
-   References:
-     http://www.opengroup.org/onlinepubs/007908799/xbd/re.html
-     http://www.opengroup.org/onlinepubs/007908799/xsh/regcomp.html
+(**
+References:
+  - {{: http://www.opengroup.org/onlinepubs/007908799/xbd/re.html} re}
+  - {{: http://www.opengroup.org/onlinepubs/007908799/xsh/regcomp.html} regcomp}
+
+Example of how to use this module (to parse some IRC logs):
+
+{[
+type msg = {
+  time:string;
+  author:string;
+  content:string;
+}
+
+let re = Re.compile (Re_posix.re "([^:].*:[^:]*:[^:]{2})<.([^>]+)> (.+)$")
+
+(* parse a line *)
+let match_line line =
+  try
+    let substrings = Re.exec re line in
+    let groups = Re.get_all substrings in
+    (* groups can be obtained directly by index within [substrings] *)
+    Some {time=groups.(1); author=groups.(2); content=groups.(3)}
+  with Not_found ->
+    None (* regex didn't match *)
+]}
 *)
 
-(* XXX Character classes *)
+(** XXX Character classes *)
 
-(* Errors that can be raised during the parsing of the regular expression *)
 exception Parse_error
 exception Not_supported
+(** Errors that can be raised during the parsing of the regular expression *)
 
 type opt = [`ICase | `NoSub | `Newline]
 
-(* Parsing of a Posix extended regular expression *)
 val re : ?opts:(opt list) -> string -> Re.t
+(** Parsing of a Posix extended regular expression *)
 
-(* Regular expression compilation *)
 val compile : Re.t -> Re.re
-   (* [compile r] is defined as [Re.compile (Re.longest r)] *)
+(** Regular expression compilation *)
+
 val compile_pat : ?opts:(opt list) -> string -> Re.re
+(** [compile r] is defined as [Re.compile (Re.longest r)] *)
 
 (*
 Deviation from the standard / ambiguities in the standard

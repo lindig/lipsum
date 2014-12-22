@@ -20,6 +20,8 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 *)
 
+(** Module [Re]: regular expressions commons *)
+
 type t
 (** Regular expression *)
 
@@ -32,18 +34,33 @@ type substrings
 (** {2 Compilation and execution of a regular expression} *)
 
 val compile : t -> re
+(** Compile a regular expression into an executable version that can be
+    used to match strings, e.g. with {!exec}. *)
+
 val exec :
   ?pos:int ->    (* Default: 0 *)
   ?len:int ->    (* Default: -1 (until end of string) *)
   re -> string -> substrings
+(** [exec re str] matches [str] against the compiled expression [re],
+    and returns the matched groups if any.
+    @param pos optional beginning of the string (default 0)
+    @param len length of the substring of [str] that can be matched (default [-1],
+      meaning to the end of the string
+    @raise Not_found if the regular expression can't be found in [str]
+*)
+
 val execp :
   ?pos:int ->    (* Default: 0 *)
   ?len:int ->    (* Default: -1 (until end of string) *)
   re -> string -> bool
+(** Similar to {!exec}, but returns [true] if the expression matches,
+    and [false] if it doesn't *)
+
 val exec_partial :
   ?pos:int ->    (* Default: 0 *)
   ?len:int ->    (* Default: -1 (until end of string) *)
   re -> string -> [ `Full | `Partial | `Mismatch ]
+(* More detailed version of {!exec_p} *)
 
 (** {2 Substring extraction} *)
 
@@ -61,6 +78,77 @@ val get_all_ofs : substrings -> (int * int) array
 
 val test : substrings -> int -> bool
 (** Test whether a group matched *)
+
+(** {2 High Level Operations} *)
+
+type 'a gen = unit -> 'a option
+
+val all :
+  ?pos:int ->    (** Default: 0 *)
+  ?len:int ->
+  re -> string -> substrings list
+(** Repeatedly calls {!exec} on the given string, starting at given
+    position and length.*)
+
+val all_gen :
+  ?pos:int ->    (** Default: 0 *)
+  ?len:int ->
+  re -> string -> substrings gen
+(** Same as {!all} but returns a generator *)
+
+val matches :
+  ?pos:int ->    (** Default: 0 *)
+  ?len:int ->
+  re -> string -> string list
+(** Same as {!all}, but extracts the matched substring rather than
+    returning the whole group. This basically iterates over matched
+    strings *)
+
+val matches_gen :
+  ?pos:int ->    (** Default: 0 *)
+  ?len:int ->
+  re -> string -> string gen
+(** Same as {!matches}, but returns a generator. *)
+
+val split :
+  ?pos:int ->    (** Default: 0 *)
+  ?len:int ->
+  re -> string -> string list
+(** [split re s] splits [s] into chunks separated by [re]. It yields
+    the chunks themselves, not the separator. For instance
+    this can be used with a whitespace-matching re such as ["[\t ]+"]. *)
+
+val split_gen :
+  ?pos:int ->    (** Default: 0 *)
+  ?len:int ->
+  re -> string -> string gen
+
+type split_token =
+  [ `Text of string  (** Text between delimiters *)
+  | `Delim of substrings (** Delimiter *)
+  ]
+
+val split_full :
+  ?pos:int ->    (** Default: 0 *)
+  ?len:int ->
+  re -> string -> split_token list
+
+val split_full_gen :
+  ?pos:int ->    (** Default: 0 *)
+  ?len:int ->
+  re -> string -> split_token gen
+
+val replace :
+  ?pos:int ->    (** Default: 0 *)
+  ?len:int ->
+  ?all:bool ->   (** Default: true. Otherwise only replace first occurrence *)
+  re ->          (** matched groups *)
+  f:(substrings -> string) ->  (* how to replace *)
+  string ->     (** string to replace in *)
+  string
+(** [replace ~all re ~f s] iterates on [s], and replaces every occurrence
+    of [re] with [f substring] where [substring] is the current match.
+    If [all = false], then only the first occurrence of [re] is replaced. *)
 
 (** {2 String expressions (literal match)} *)
 
@@ -188,6 +276,7 @@ val notnl : t
 (** Any character but a newline *)
 
 val alnum : t
+val wordc : t
 val alpha : t
 val ascii : t
 val blank : t
