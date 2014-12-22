@@ -1,10 +1,24 @@
 type regexp = Re.re
 
-let regexp ?(flags = []) pat =
+type flag = [ `CASELESS | `MULTILINE | `ANCHORED ]
+
+type split_result =
+  | Text  of string
+  | Delim of string
+  | Group of int * string
+  | NoGroup
+
+type substrings = Re.substrings
+
+let re ?(flags = []) pat =
   let opts = List.map (function
     | `CASELESS -> `Caseless
+    | `MULTILINE -> `Multiline
+    | `ANCHORED -> `Anchored
   ) flags in
-  Re_perl.compile_pat ~opts pat
+  Re_perl.re ~opts pat
+
+let regexp ?flags pat = Re.compile (re ?flags pat)
 
 let extract ~rex s =
   Re.get_all (Re.exec rex s)
@@ -57,21 +71,44 @@ let split ~rex str =
 
 (* From PCRE *)
 let string_unsafe_sub s ofs len =
-  let r = String.create len in
-  String.unsafe_blit s ofs r 0 len;
-  r
+  let r = Bytes.create len in
+  Bytes.unsafe_blit s ofs r 0 len;
+  Bytes.unsafe_to_string r
 
 let quote s =
   let len = String.length s in
-  let buf = String.create (len lsl 1) in
+  let buf = Bytes.create (len lsl 1) in
   let pos = ref 0 in
   for i = 0 to len - 1 do
     match String.unsafe_get s i with
     | '\\' | '^' | '$' | '.' | '[' | '|'
     | '('  | ')' | '?' | '*' | '+' | '{' as c ->
-      String.unsafe_set buf !pos '\\';
+      Bytes.unsafe_set buf !pos '\\';
       incr pos;
-      String.unsafe_set buf !pos c; incr pos
-    | c -> String.unsafe_set buf !pos c; incr pos
+      Bytes.unsafe_set buf !pos c; incr pos
+    | c -> Bytes.unsafe_set buf !pos c; incr pos
   done;
   string_unsafe_sub buf 0 !pos
+
+let full_split ?(max=0) ~rex s =
+  if String.length s = 0 then []
+  else if max = 1 then [Text s]
+  else
+    let results = Re.split_full rex s in
+    let matches =
+      List.map (function
+        | `Text s -> [Text s]
+        | `Delim d ->
+          let matches = Re.get_all_ofs d in
+          let delim = Re.get d 0 in
+          (Delim delim)::(
+            let l = ref [] in
+            for i = 1 to Array.length matches - 1 do
+              l :=
+                (if matches.(i) = (-1, -1)
+                 then NoGroup
+                 else Group (i, Re.get d i))
+                ::(!l)
+            done;
+            List.rev !l)) results in
+    List.concat matches
