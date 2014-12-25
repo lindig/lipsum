@@ -8,7 +8,7 @@ PREFIX  = $(HOME)
 BIN 	= $(PREFIX)/bin
 MAN1DIR = $(PREFIX)/man/man1
 POD2MAN = pod2man $(PODOPTS)
-PODOPTS = --center="Christian Lindig" --name="lipsum" --release="2013"
+PODOPTS = --center="Christian Lindig" --name="lipsum" --release="2014"
 INSTALL = install
 
 # Libraries

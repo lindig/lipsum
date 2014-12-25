@@ -22,7 +22,7 @@ let (@@) f x = f x
 let copyright () =
     List.iter print_endline
     [ giturl
-    ; "Copyright (c) 2012, 2013, Christian Lindig <lindig@gmail.com>"
+    ; "Copyright (c) 2012, 2013, 2014 Christian Lindig <lindig@gmail.com>"
     ; "All rights reserved."
     ; ""
     ; "Redistribution and use in source and binary forms, with or"

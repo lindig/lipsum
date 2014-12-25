@@ -268,8 +268,8 @@ notangle(1), cpp(1), http://daringfireball.net/projects/markdown/
 
 =head1 AUTHOR
 
-Written by Christian Lindig <lindig@gmail.com>. The source code available
-from https://github.com/lindig/lipsum.git
+Written by Christian Lindig <lindig@gmail.com>. The source code is
+available from https://github.com/lindig/lipsum.git
     
 =head1 LICENSE
 
