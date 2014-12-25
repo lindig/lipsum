@@ -1,6 +1,6 @@
 
 # This is a Unix manual page for Lipsum in Perl POD format. It is
-# translated into manual format using pod2perl which comes with a Perl
+# translated into manual format using pod2perl which comes with every Perl
 # installation. The POD format has some limitations but it is still one of
 # the easier ways to write a manual page. I take the limitations (no
 # tables, problems with escapes) in exchange for an easy way to update the

@@ -25,8 +25,8 @@ sortlines: sortlines.c
 ## Types and Main Function
 		
 The idea is to read the file into memory, to build up an array of pointers
-to each line in the file, to sort the array, and finally to emit the lines in
-sorting order using the sorted array.
+to each line in the file, to sort the array, and finally to emit the lines
+in sorting order using the sorted array.
 
 <<sortlines.c>>=
 #include <stdio.h>
@@ -40,11 +40,12 @@ sorting order using the sorted array.
 <<main function>>
 @ 
 
-Possible challenges include multiple numbers in a line and trying to avoid to
-scan a line multiple times for the detection of the last number in it.
+Possible challenges include multiple numbers in a line and trying to avoid
+to scan a line multiple times for the detection of the last number in it.
 
 The key data structure is `LINE`. It contains a pointer into the file, the
-length of the line and an `int n` for the value of last number in that line.
+length of the line and an `int n` for the value of the last number in that
+line.
 
 <<type definitions>>=
 typedef struct line {
@@ -54,8 +55,8 @@ typedef struct line {
 } LINE;      
 
 @ The sort predicate on lines is defined by `cmp`. It derives an integer by
-subtracting the numbers belonging to the two lines being compared. The sign of
-the integer signals the order to the sort function.
+subtracting the numbers belonging to the two lines being compared. The sign
+of the integer signals the order to the sort function.
 
 <<sort predicate cmp>>=
 static int cmp(const LINE *x, const LINE *y)
@@ -63,8 +64,8 @@ static int cmp(const LINE *x, const LINE *y)
 	return x->n - y->n;
 }
 
-@ The main function reads the file into memory, scans it into lines, sorts the
-lines, and emits them.
+@ The main function reads the file into memory, scans it into lines, sorts
+the lines, and emits them.
 
 <<main function>>=
 int main (int argc, const char * argv[]) 
