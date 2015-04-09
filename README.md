@@ -52,6 +52,13 @@ using Lipsum, one would run Lipsum like this:
 
         $ lipsum expand echo.c echo.lp > echo.c
         $ cc -o echo echo.c
+
+## Installation from Opam
+
+If you are using the OCaml package manager Opam (which you should),
+installation of Lipsum is easy:
+
+        $ opam install lipsum
             
 ## Resources for Literate Programming
 
@@ -84,7 +91,7 @@ extracting code from a literate program. I am planning to use it in
 combination with Markdown as a syntax for documentation and to include it
 with literate programs that I release as open source.
 
-## Implementation and Installation
+## Implementation and Installation from GitHub
 
 Lipsum is implemented in [Objective Caml](http://caml.inria.fr/). While
 Objective Caml is available on the Windows platform, this distribution
@@ -124,16 +131,8 @@ After installation it is available using `man lipsum` as usual.
 ## Source Code
 
 https://github.com/lindig/lipsum.git
-https://github.com/ocaml/ocaml-re.git
-
-The source code contains the OCaml-Re library for reguar expressions that
-comes with its own license.
 
     src/        source code for lipsum
-    ocaml-re/   library for regular expression
-
-OCaml-Re is included as an Git Subtree to avoid dependencies on remote
-repositories.
 
 ## License
 
@@ -142,7 +141,8 @@ displayed by the program:
 
     $ lipsum copyright
     https://github.com/lindig/lipsum.git
-    Copyright (c) 2012, 2013, Christian Lindig <lindig@gmail.com>
+    Copyright (c) 2012, 2013, 2014, 2015 
+    Christian Lindig <lindig@gmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or
@@ -179,4 +179,20 @@ displayed by the program:
 ## Author
 
 Christian Lindig <lindig@gmail.com>
+
+# OPAM
+lipsum - self-contained tool for literate programming in tradition of NoWeb
+
+Lipsum is a command-line utility for literate programming. It stands in the
+tradition of [Noweb](http://www.cs.tufts.edu/~nr/noweb/), a popular and
+flexible literate programming system by Norman Ramsey. The idea of literate
+programming is to keep documentation for programmers and program code in
+one file and to arrange it in a way that helps understanding it best. To
+actually compile or run the code it needs to be extracted from the literate
+program and Lipsum is a tool to do this.
+
+Like Noweb, Lipsum employs a minimal markup to arrange documentation and
+code in a file. Also like Noweb, Lipsum is language agnostic and can be
+used for almost any programming language and documentation.
+
 

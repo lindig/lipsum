@@ -22,7 +22,8 @@ let (@@) f x = f x
 let copyright () =
     List.iter print_endline
     [ giturl
-    ; "Copyright (c) 2012, 2013, 2014 Christian Lindig <lindig@gmail.com>"
+    ; "Copyright (c) 2012, 2013, 2014, 2015" 
+    ; "Christian Lindig <lindig@gmail.com>"
     ; "All rights reserved."
     ; ""
     ; "Redistribution and use in source and binary forms, with or"
@@ -177,7 +178,8 @@ let help io =
     ; this^" parse [file.lp]            parse file and emit it"
     ; ""
     ; giturl
-    ; "Copyright (c) 2012, 2013 Christian Lindig <lindig@gmail.com>"
+    ; "Copyright (c) 2012, 2013, 2014, 2015"
+    ; "Christian Lindig <lindig@gmail.com>"
     ]
 
 let tangle_formats () = print_endline @@ String.concat " " T.formats
