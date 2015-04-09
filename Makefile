@@ -15,7 +15,7 @@ INSTALL = install
 # OCaml - we rely on ocamlbuild for compilation
 
 OCB_OPTS = -use-ocamlfind -yaccflag -v
-OCB 	 = ocamlbuild $(OCB_OPTS) -I src -libs re,re_glob
+OCB 	 = ocamlbuild $(OCB_OPTS) -I src
 
 # high-level targets
 
