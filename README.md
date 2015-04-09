@@ -180,7 +180,7 @@ displayed by the program:
 
 Christian Lindig <lindig@gmail.com>
 
-# OPAM
+# Opam
 lipsum - self-contained tool for literate programming in tradition of NoWeb
 
 Lipsum is a command-line utility for literate programming. It stands in the
