@@ -53,12 +53,13 @@ using Lipsum, one would run Lipsum like this:
         $ lipsum expand echo.c echo.lp > echo.c
         $ cc -o echo echo.c
 
-## Installation from Opam
+## Installation from Opam (is not yet available)
 
-If you are using the OCaml package manager Opam (which you should),
-installation of Lipsum is easy:
+I'm currently preparing Lipsum for submission to Opam. Once this has
+happened, installation of Lipsum is easy:
 
         $ opam install lipsum
+
             
 ## Resources for Literate Programming
 
@@ -104,6 +105,11 @@ required:
 * Make
 * Unix tools called from the Makefile: install, cp
 
+Lipsum depends on the regular expression library Re that you need to
+install. I recommend installing it using Opam:
+
+        $ opam install re
+
 To compile Lipsum, adjust the Makefile and run `make`. In particular, you
 might want to adjust the `PREFIX` variable that controls where the lipsum
 binary and the manual are getting installed.
@@ -112,10 +118,6 @@ binary and the manual are getting installed.
         $ make install 
         or
         $ make PREFIX=/usr/local install
-
-The code inlcudes the ocaml-re library that comes with its own build
-system. However, we don't rely on it but simply tell ocamlbuild(1) where to
-find the relevant files.
 
 ## Documentation
 
