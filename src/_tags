@@ -1,0 +1,5 @@
+
+<*.ml>:     package(re), package(re.glob)
+<lipsum.*>: package(re), package(re.glob)
+
+
