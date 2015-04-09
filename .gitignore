@@ -3,5 +3,6 @@ _build
 lipsum.native
 lipsum.1
 lipsum
+descr
 
 /.DS_Store
