@@ -58,7 +58,7 @@ FORCE:
 # OPAM - the targets below help to publish this code via opam.ocaml.org
 
 NAME =		lipsum
-VERSION =	0.1
+VERSION =	0.2
 TAG =		v$(VERSION)
 GITHUB =	https://github.com/lindig/$(NAME)
 ZIP =		$(GITHUB)/archive/$(TAG).zip
@@ -81,8 +81,8 @@ release:	url opam descr sanity
 
 sanity:		descr opam
 		grep -q 'version: "$(VERSION)"' opam
-		grep -q 'version = "$(VERSION)"' META
 		sed -n 1p descr | grep -q $(NAME)
+		# grep -q 'version = "$(VERSION)"' META
 
 # pseudo target
 
