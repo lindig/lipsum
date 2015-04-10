@@ -35,6 +35,7 @@ dir:
 clean:
 	$(OCB) -clean
 	rm -f lipsum.1 lipsum
+	rm -f url descr
 
 lipsum.native: libs
 	$(OCB) lipsum.native
@@ -73,7 +74,7 @@ descr:		README.md
 url:		FORCE
 		# echo	"archive: \"$(ZIP)\"" > url
 		# echo	"checksum: \"`curl -L $(ZIP)| md5 -q`\"" >> url
-		echo	"git: "git@github.com:lindig/lipsum.git > url
+		echo	'git: "git@github.com:lindig/lipsum.git"' > url
 
 release:	url opam descr sanity
 		test -d "$(OPAM)" || mkdir -p $(OPAM)
