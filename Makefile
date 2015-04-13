@@ -72,9 +72,9 @@ descr:		README.md
 		sed -n '/^# Opam/,$$ { /^#/n; p;}' $< >$@
 
 url:		FORCE
-		# echo	"archive: \"$(ZIP)\"" > url
-		# echo	"checksum: \"`curl -L $(ZIP)| md5 -q`\"" >> url
-		echo	'git: "https://github.com/lindig/lipsum.git"' > url
+		echo	"archive: \"$(ZIP)\"" > url
+		echo	"checksum: \"`curl -L $(ZIP)| md5 -q`\"" >> url
+		# echo	'git: "https://github.com/lindig/lipsum.git"' > url
 
 release:	url opam descr sanity
 		test -d "$(OPAM)" || mkdir -p $(OPAM)

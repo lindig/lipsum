@@ -53,13 +53,14 @@ using Lipsum, one would run Lipsum like this:
         $ lipsum expand echo.c echo.lp > echo.c
         $ cc -o echo echo.c
 
-## Installation from Opam (is not yet available)
+## Installation from Opam 
 
-I'm currently preparing Lipsum for submission to Opam. Once this has
-happened, installation of Lipsum is easy:
+Lipsum is available via the OCaml package manager Opam:
 
         $ opam install lipsum
 
+This will install a binary and the manual page. See also below for how to
+obtain the source code from GitHub.
             
 ## Resources for Literate Programming
 
