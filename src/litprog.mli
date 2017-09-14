@@ -4,20 +4,20 @@
 exception NoSuchChunk of string (** a requested code chunk doesn't exist *)
 exception Cycle of string       (** code chunks refers to itself *)
 
-type code = 
-    | Str of Tangle.position * string 
-    | Ref of string
-(** Code is a string or a reference to another chunk *)
+type code =
+  | Str of Tangle.position * string
+  | Ref of string
+  (** Code is a string or a reference to another chunk *)
 
-type chunk = 
-    | Doc of string 
-    | Code of string * code list
-(** A chunk is a document chunk or a named code chunk. The code 
-    is modeled as a list of code and references *)
+type chunk =
+  | Doc of string
+  | Code of string * code list
+  (** A chunk is a document chunk or a named code chunk. The code
+      is modeled as a list of code and references *)
 
 
 type doc = chunk list
-type t 
+type t
 (** A document is a list of chunks. Such a document can be turned into an
     abstract representation of type t *)
 
@@ -29,15 +29,15 @@ val doc : t -> chunk list
 val code_chunks : t -> string list
 (** Return the names of all code chunks. *)
 
-val code_roots : t -> string list 
-(** Code chunks to referred to by others are roots. Code_roots 
+val code_roots : t -> string list
+(** Code chunks to referred to by others are roots. Code_roots
     returns all root code chunks *)
 
-val tangle : t -> Tangle.t -> out_channel -> string -> unit 
+val tangle : t -> Tangle.t -> out_channel -> string -> unit
 (** Extract a named code chunk from a literate program by recursively
     resolving all references and writing the result to an output
     channel. The formatting is controlled by the Tangle.t value. The
-    function may raise exceptions in case of undefined references or cyclic 
+    function may raise exceptions in case of undefined references or cyclic
     references *)
 
 val unknown_references : t -> string list
