@@ -1,0 +1,13 @@
+(jbuild_version 1)
+
+(executable
+ ((name lipsum)
+  (public_name lipsum)
+  (libraries
+   (re.glob))))
+
+(ocamlyacc
+  (parser))
+
+(ocamllex
+ (scanner escape))

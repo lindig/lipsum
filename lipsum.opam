@@ -1,0 +1,19 @@
+# vim: set et:
+#
+
+opam-version:   "1.2"
+name:           "lipsum"
+version:        "0.3"
+maintainer:     "Christian Lindig <lindig@gmail.com>"
+authors:        "Christian Lindig <lindig@gmail.com>"
+homepage:       "https://github.com/lindig/lipsum"
+bug-reports:    "https://github.com/lindig/lipsum/issues"
+license:        "BSD"
+dev-repo:       "https://github.com/lindig/lipsum.git"
+build: [
+  ["jbuilder" "build" "-j" jobs "@install"]
+]
+depends: [
+  "jbuilder"    {build}
+  "re"
+]

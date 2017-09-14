@@ -1,7 +1,7 @@
 #
 #
 
-LIPSUM = 	../lipsum.native
+LIPSUM = 	../_build/default/src/lipsum.exe
 CC = 		gcc
 
 all: 		echo sortlines
