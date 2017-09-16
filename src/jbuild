@@ -1,10 +1,10 @@
 (jbuild_version 1)
 
 (executable
- ((name lipsum)
+ ((name main)
   (public_name lipsum)
   (libraries
-   (re.glob))))
+   (cmdliner re.glob))))
 
 (ocamlyacc
   (parser))
