@@ -50,8 +50,18 @@ used for almost any programming language and documentation.
 To extract the code for `echo.c` for compilation from the file `echo.lp`
 using Lipsum, one would run Lipsum like this:
 
-        $ lipsum expand echo.c echo.lp > echo.c
+        $ lipsum expand echo.c echo.lp
         $ cc -o echo echo.c
+
+## Important Commands
+
+* `lipsum tangle`: extract source code to stdout
+* `lipsum expand`: extract source code to file
+* `lipsum weave`: format input
+* `lipsum roots`: emit names of root chunks to stdout
+
+For more information, see the manual page lipsum(1) and invoke `lipsum
+<command> --help`.
 
 ## Installation from Opam 
 
@@ -62,6 +72,11 @@ Lipsum is available via the OCaml package manager Opam:
 This will install a binary and the manual page. See also below for how to
 obtain the source code from GitHub.
             
+It can be also compiled from sources. Take a look a `lipsum.opsm` for
+dependencies:
+
+    $ make
+
 ## Resources for Literate Programming
 
 While literate programming isn't a mass phenomenon among programmers it has
@@ -93,33 +108,6 @@ extracting code from a literate program. I am planning to use it in
 combination with Markdown as a syntax for documentation and to include it
 with literate programs that I release as open source.
 
-## Implementation and Installation from GitHub
-
-Lipsum is implemented in [Objective Caml](http://caml.inria.fr/). While
-Objective Caml is available on the Windows platform, this distribution
-assumes a Unix environment. It is developed on Mac OS X but should compile
-equally well on a Linux system. For compilation, the following tools are
-required:
-
-* Objective Caml
-* pod2man (part of standard Perl distributions)
-* Make
-* Unix tools called from the Makefile: install, cp
-
-Lipsum depends on the regular expression library Re that you need to
-install. I recommend installing it using Opam:
-
-        $ opam install re
-
-To compile Lipsum, adjust the Makefile and run `make`. In particular, you
-might want to adjust the `PREFIX` variable that controls where the lipsum
-binary and the manual are getting installed.
-
-        $ make
-        $ make install 
-        or
-        $ make PREFIX=/usr/local install
-
 ## Documentation
 
 Lipsum comes with a Unix manual page `lipsum.1` that is generated from
@@ -131,11 +119,12 @@ the manual page prior to installation use `nroff`:
         
 After installation it is available using `man lipsum` as usual.
 
+Lipsum provides minimal online help via `--help` options for all its sub
+commands.
+
 ## Source Code
 
 https://github.com/lindig/lipsum.git
-
-    src/        source code for lipsum
 
 ## License
 
@@ -173,29 +162,8 @@ displayed by the program:
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 
-    This program includes a library for regular expressions that
-    is available from https://github.com/ocaml/ocaml-re.git.
-    It was released under the GNU LESSER GENERAL PUBLIC LICENSE
-    and was written by Jerome Vouillon 
-    <Jerome.Vouillon@pps.univ-paris-diderot.fr>
-
 ## Author
 
 Christian Lindig <lindig@gmail.com>
-
-# Opam
-lipsum - self-contained tool for literate programming in tradition of NoWeb
-
-Lipsum is a command-line utility for literate programming. It stands in the
-tradition of [Noweb](http://www.cs.tufts.edu/~nr/noweb/), a popular and
-flexible literate programming system by Norman Ramsey. The idea of literate
-programming is to keep documentation for programmers and program code in
-one file and to arrange it in a way that helps understanding it best. To
-actually compile or run the code it needs to be extracted from the literate
-program and Lipsum is a tool to do this.
-
-Like Noweb, Lipsum employs a minimal markup to arrange documentation and
-code in a file. Also like Noweb, Lipsum is language agnostic and can be
-used for almost any programming language and documentation.
 
 

@@ -17,9 +17,9 @@ lipsum - a simple literate programming utility
 
 B<lipsum> B<tangle> [B<-f> I<fmt>] I<chunk> [I<file.lp>]
 
-B<lipsum> B<expand> B<-f> I<fmt> I<glob> [I<file.lp>]
+B<lipsum> B<expand> [B<-f> I<fmt>] I<glob> [I<file.lp>]
 
-B<lipsum> B<tangle> B<-f>
+B<lipsum> B<formats>
 
 B<lipsum> B<roots> [I<file.lp>]
 
@@ -27,31 +27,31 @@ B<lipsum> B<check> [I<file.lp>]
 
 B<lipsum> B<chunks> [I<file.lp>]
 
+B<lipsum> B<undefined> [I<file.lp>]
+
 B<lipsum> B<weave> [I<file.lp>]
-
-B<lipsum> B<prepare> [I<file>]
-
-B<lipsum> B<help>|B<-help>
 
 B<lipsum> B<copyright>
 
 =head1 DESCRIPTION
 
-B<Lipsum> is a tool for literate programming in the tradition of NoWeb and
-Sweave. A literate program is a file that contains both documentation and
-source code which are separated by a lightweight markup. B<lipsum>'s primary
-task is to extract the source from a literate program to make it
-available for compilation and execution. This is traditionally called
-I<tangling>. B<Lipsum> is language agnostic and can be used with almost any
-programming language and documentation syntax.
+B<Lipsum> is a tool for literate programming in the tradition of NoWeb
+and Sweave. A literate program is a file that contains both
+documentation and source code which are separated by a lightweight
+markup. B<lipsum>'s primary task is to extract the source from a
+literate program to make it available for compilation and execution.
+This is traditionally called I<tangling>. B<Lipsum> is language agnostic
+and can be used with almost any programming language and documentation
+syntax.
 
 =head1 COMMANDS
 
 The first command line parameter identifies a command (like B<tangle> or
-B<help>), which is followed by options, parameters, and file names.
+B<roots>), which is followed by options, parameters, and file names.
 A command that expects a named file for input will typically read input
 from I<stdin> when no file name is given. Output of a command generally goes
-to I<stdout>.
+to I<stdout>. All commands accept an option B<--help> to show online
+help.
 
 =over 4
 
@@ -60,15 +60,15 @@ to I<stdout>.
 Extract I<chunk> from I<file.lp> and emit it to I<stdout>. Commands
 B<chunks> and B<roots> list the available chunks. The extracted code
 optionally includes references to  original source code locations in
-I<file.lp>. For a list of available formats, use B<tangle -f>.
+I<file.lp>. For a list of available formats, use B<formats>.
 
-=item B<tangle> B<-f>
+=item B<formats>
 
 Emit the list of available source code position formats. The best known
 format is C<cpp> as it is used by the C preprocessor cpp(1) and works for
 many languages that use C<#> to start a comment.
 
-=item B<expand> B<-f> I<fmt> I<glob> [I<file.lp>]
+=item B<expand> [B<-f> I<fmt>] I<glob> [I<file.lp>]
 
 Extract each root code chunk matching shell pattern I<glob> to a file of
 the same name using format I<fmt>. This is a quick way extract all code
@@ -81,14 +81,14 @@ This will expand all chunks matching `*.c` or `*.h` using the cpp(1)
 format for back references into F<file.lp>.    
 
 Note that pattern C<*> does not match a C</> and hence C<*.c> does not
-match C<a/b.c> but C<a/*.c> does.
+match C<a/b.c>.
 
 =item B<roots> [I<file.lp>]
 
 List the name of all root code chunks, one per line. A root chunk is
 a chunk that is not part of another code chunk.
 
-=item B<check> [I<file.lp>]
+=item B<undefined> [I<file.lp>]
 
 List code chunks that are referenced but not defined, one per line.
 
@@ -101,18 +101,6 @@ List the name of all code chunks, one per line.
 Emit I<file.lp>  with code chunks indented by 4 spaces. This makes the
 output suitable for Markdown provided the documentation is already in
 Markdown syntax.
-
-=item B<prepare> [I<file>]
-
-Read code in I<file> and add C<@> escapes where necessary to prepare the 
-code to be used as a code chunk in a literate program. This helps moving
-existing code into a literate program.
-
-=item B<help> | B<-help>
-
-Emits a short help message to I<stderr>. The help message includes a few 
-additional commands that are not listed here because they are intended
-for debugging.
 
 =item B<copyright>
 
@@ -182,9 +170,6 @@ Since a lipsum file uses @, <<, >>, and >>= for markup, a mechanism is
 needed to include these in documentation and code chunks, as well as chunk
 names. The general mechanism is to prefix strings with C<@> to escape their
 meaning as markup.
-
-To help with this when including existing source code into a literate
-program, the B<prepare> command adds these escape sequences to input.
 
 Below are situations where escaping is important.
 

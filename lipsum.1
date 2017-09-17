@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "lipsum 1"
-.TH lipsum 1 "2014-12-25" "2015" "Christian Lindig"
+.TH lipsum 1 "2017-09-17" "2015" "Christian Lindig"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -144,9 +144,9 @@ lipsum \- a simple literate programming utility
 .IX Header "SYNOPSIS"
 \&\fBlipsum\fR \fBtangle\fR [\fB\-f\fR \fIfmt\fR] \fIchunk\fR [\fIfile.lp\fR]
 .PP
-\&\fBlipsum\fR \fBexpand\fR \fB\-f\fR \fIfmt\fR \fIglob\fR [\fIfile.lp\fR]
+\&\fBlipsum\fR \fBexpand\fR [\fB\-f\fR \fIfmt\fR] \fIglob\fR [\fIfile.lp\fR]
 .PP
-\&\fBlipsum\fR \fBtangle\fR \fB\-f\fR
+\&\fBlipsum\fR \fBformats\fR
 .PP
 \&\fBlipsum\fR \fBroots\fR [\fIfile.lp\fR]
 .PP
@@ -154,42 +154,42 @@ lipsum \- a simple literate programming utility
 .PP
 \&\fBlipsum\fR \fBchunks\fR [\fIfile.lp\fR]
 .PP
+\&\fBlipsum\fR \fBundefined\fR [\fIfile.lp\fR]
+.PP
 \&\fBlipsum\fR \fBweave\fR [\fIfile.lp\fR]
-.PP
-\&\fBlipsum\fR \fBprepare\fR [\fIfile\fR]
-.PP
-\&\fBlipsum\fR \fBhelp\fR|\fB\-help\fR
 .PP
 \&\fBlipsum\fR \fBcopyright\fR
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-\&\fBLipsum\fR is a tool for literate programming in the tradition of NoWeb and
-Sweave. A literate program is a file that contains both documentation and
-source code which are separated by a lightweight markup. \fBlipsum\fR's primary
-task is to extract the source from a literate program to make it
-available for compilation and execution. This is traditionally called
-\&\fItangling\fR. \fBLipsum\fR is language agnostic and can be used with almost any
-programming language and documentation syntax.
+\&\fBLipsum\fR is a tool for literate programming in the tradition of NoWeb
+and Sweave. A literate program is a file that contains both
+documentation and source code which are separated by a lightweight
+markup. \fBlipsum\fR's primary task is to extract the source from a
+literate program to make it available for compilation and execution.
+This is traditionally called \fItangling\fR. \fBLipsum\fR is language agnostic
+and can be used with almost any programming language and documentation
+syntax.
 .SH "COMMANDS"
 .IX Header "COMMANDS"
 The first command line parameter identifies a command (like \fBtangle\fR or
-\&\fBhelp\fR), which is followed by options, parameters, and file names.
+\&\fBroots\fR), which is followed by options, parameters, and file names.
 A command that expects a named file for input will typically read input
 from \fIstdin\fR when no file name is given. Output of a command generally goes
-to \fIstdout\fR.
+to \fIstdout\fR. All commands accept an option \fB\-\-help\fR to show online
+help.
 .IP "\fBtangle\fR [\fB\-f\fR \fIfmt\fR] \fIchunk\fR [\fIfile.lp\fR]" 4
 .IX Item "tangle [-f fmt] chunk [file.lp]"
 Extract \fIchunk\fR from \fIfile.lp\fR and emit it to \fIstdout\fR. Commands
 \&\fBchunks\fR and \fBroots\fR list the available chunks. The extracted code
 optionally includes references to  original source code locations in
-\&\fIfile.lp\fR. For a list of available formats, use \fBtangle \-f\fR.
-.IP "\fBtangle\fR \fB\-f\fR" 4
-.IX Item "tangle -f"
+\&\fIfile.lp\fR. For a list of available formats, use \fBformats\fR.
+.IP "\fBformats\fR" 4
+.IX Item "formats"
 Emit the list of available source code position formats. The best known
 format is \f(CW\*(C`cpp\*(C'\fR as it is used by the C preprocessor \fIcpp\fR\|(1) and works for
 many languages that use \f(CW\*(C`#\*(C'\fR to start a comment.
-.IP "\fBexpand\fR \fB\-f\fR \fIfmt\fR \fIglob\fR [\fIfile.lp\fR]" 4
-.IX Item "expand -f fmt glob [file.lp]"
+.IP "\fBexpand\fR [\fB\-f\fR \fIfmt\fR] \fIglob\fR [\fIfile.lp\fR]" 4
+.IX Item "expand [-f fmt] glob [file.lp]"
 Extract each root code chunk matching shell pattern \fIglob\fR to a file of
 the same name using format \fIfmt\fR. This is a quick way extract all code
 chunks in one go into individual files. On the shell command line, you have
@@ -203,13 +203,13 @@ This will expand all chunks matching `*.c` or `*.h` using the \fIcpp\fR\|(1)
 format for back references into \fIfile.lp\fR.
 .Sp
 Note that pattern \f(CW\*(C`*\*(C'\fR does not match a \f(CW\*(C`/\*(C'\fR and hence \f(CW\*(C`*.c\*(C'\fR does not
-match \f(CW\*(C`a/b.c\*(C'\fR but \f(CW\*(C`a/*.c\*(C'\fR does.
+match \f(CW\*(C`a/b.c\*(C'\fR.
 .IP "\fBroots\fR [\fIfile.lp\fR]" 4
 .IX Item "roots [file.lp]"
 List the name of all root code chunks, one per line. A root chunk is
 a chunk that is not part of another code chunk.
-.IP "\fBcheck\fR [\fIfile.lp\fR]" 4
-.IX Item "check [file.lp]"
+.IP "\fBundefined\fR [\fIfile.lp\fR]" 4
+.IX Item "undefined [file.lp]"
 List code chunks that are referenced but not defined, one per line.
 .IP "\fBchunks\fR [\fIfile.lp\fR]" 4
 .IX Item "chunks [file.lp]"
@@ -219,16 +219,6 @@ List the name of all code chunks, one per line.
 Emit \fIfile.lp\fR  with code chunks indented by 4 spaces. This makes the
 output suitable for Markdown provided the documentation is already in
 Markdown syntax.
-.IP "\fBprepare\fR [\fIfile\fR]" 4
-.IX Item "prepare [file]"
-Read code in \fIfile\fR and add \f(CW\*(C`@\*(C'\fR escapes where necessary to prepare the 
-code to be used as a code chunk in a literate program. This helps moving
-existing code into a literate program.
-.IP "\fBhelp\fR | \fB\-help\fR" 4
-.IX Item "help | -help"
-Emits a short help message to \fIstderr\fR. The help message includes a few 
-additional commands that are not listed here because they are intended
-for debugging.
 .IP "\fBcopyright\fR" 4
 .IX Item "copyright"
 Emit the copyright notice and license to \fIstdout\fR.
@@ -299,9 +289,6 @@ Since a lipsum file uses @, <<, >>, and >>= for markup, a mechanism is
 needed to include these in documentation and code chunks, as well as chunk
 names. The general mechanism is to prefix strings with \f(CW\*(C`@\*(C'\fR to escape their
 meaning as markup.
-.PP
-To help with this when including existing source code into a literate
-program, the \fBprepare\fR command adds these escape sequences to input.
 .PP
 Below are situations where escaping is important.
 .ie n .IP """@"" in code" 4

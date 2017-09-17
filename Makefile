@@ -6,9 +6,9 @@
 
 JB 	= jbuilder
 POD2MAN = pod2man $(PODOPTS)
-PODOPTS = --center="Christian Lindig" --name="lipsum" --release="2015"
+PODOPTS = --center="Christian Lindig" --name="lipsum" --release="2017"
 
-all: 
+all: 	lipsum.1 
 	$(JB) build
 
 install:
@@ -31,10 +31,13 @@ NAME     = lipsum
 VERSION  = master
 TAG      = $(VERSION)
 GITHUB   = https://github.com/lindig/$(NAME)
-ZIP      = $(GITHUB)/archive/$(TAG).zip
+ZIP      = $(GITHUB)/archive/$(TAG)/$(NAME)-$(TAG).zip
 OPAM     = $(HOME)/Development/opam-repository/packages/$(NAME)/$(NAME).$(VERSION)
 
-url:
-	echo	"archive: \"$(ZIP)\"" > url
-	echo	"checksum: \"`curl -L $(ZIP)| md5 -q`\"" >> url
+zip:
+	curl -L -O $(ZIP)
+
+lipsum.url:
+	echo	"archive: \"$(ZIP)\"" > $@
+	echo	"checksum: \"`curl -L $(ZIP)| md5 -q`\"" >> $@
 
