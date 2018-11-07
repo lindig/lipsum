@@ -8,8 +8,8 @@ module S  = Scanner
 module P  = Parser
 module LP = Litprog
 module T  = Tangle
-module RX = Re      (** regular expression   *)
-module G  = Re_glob (** shell-style globbing *)
+module RX = Re      (* regular expression   *)
+module G  = Re_glob (* shell-style globbing *)
 
 exception Error of string
 let error fmt = Printf.kprintf (fun msg -> raise (Error msg)) fmt
@@ -120,7 +120,7 @@ let compile glob =
     G.Parse_error -> error "syntax error in pattern '%s'" glob
 
 let expand fmt glob path =
-  (** only expand roots matching glob *)
+  (* only expand roots matching glob *)
   let rx    = compile glob in (* rx can be used for matching a string *)
   let fmt   = T.lookup fmt in
   let lp    = litprog path in

@@ -8,7 +8,6 @@
     let new_line    = Lexing.new_line
 
     exception Error of string
-    let (@@) f x = f x
 
     let position lexbuf =
         let p = lexbuf.L.lex_curr_p in

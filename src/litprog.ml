@@ -39,7 +39,7 @@ let append key v map =
 
 let make chunks =
   let add t = function
-    | Doc(str)   as d ->    { t with chunks = d :: t.chunks }
+    | Doc(_)     as d ->    { t with chunks = d :: t.chunks }
     | Code(n,cs) as c ->    { code   = append n cs t.code
                             ; chunks = c::t.chunks
                             }
@@ -117,7 +117,7 @@ let code = function
                     p.T.line p.T.offset (excerpt str)
   | Ref(str)   -> printf "<<%s>>\n"        str
 
-let chunk map = function
+let chunk _map = function
   | Doc(str)       -> Printf.printf "@ %s\n"  (excerpt str)
   | Code(name,cs)  ->
     ( Printf.printf "<<%s>>=\n" name

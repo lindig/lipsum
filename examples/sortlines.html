@@ -1,0 +1,886 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional //EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset-us-ascii">
+  <style>
+
+body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color: #333;
+  /* overflow: hidden; */
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+  min-width: 200px;
+  max-width: 790px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+ a {
+  background-color: transparent;
+}
+
+ a:active,
+ a:hover {
+  outline: 0;
+}
+
+ strong {
+  font-weight: bold;
+}
+
+ h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+ img {
+  border: 0;
+}
+
+ hr {
+  box-sizing: content-box;
+  height: 0;
+}
+
+ pre {
+  overflow: auto;
+}
+
+ code,
+ kbd,
+ pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+ input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+ html input[disabled] {
+  cursor: default;
+}
+
+ input {
+  line-height: normal;
+}
+
+ input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+ table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ td,
+ th {
+  padding: 0;
+}
+
+ * {
+  box-sizing: border-box;
+}
+
+ input {
+  font: 13px/1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+ a {
+  color: #4078c0;
+  text-decoration: none;
+}
+
+ a:hover,
+ a:active {
+  text-decoration: underline;
+}
+
+ hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+ hr:before {
+  display: table;
+  content: "";
+}
+
+ hr:after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+ h1 {
+  font-size: 30px;
+}
+
+ h2 {
+  font-size: 21px;
+}
+
+ h3 {
+  font-size: 16px;
+}
+
+ h4 {
+  font-size: 14px;
+}
+
+ h5 {
+  font-size: 12px;
+}
+
+ h6 {
+  font-size: 11px;
+}
+
+ blockquote {
+  margin: 0;
+}
+
+ ul,
+ ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ ol ol,
+ ul ol {
+  list-style-type: lower-roman;
+}
+
+ ul ul ol,
+ ul ol ol,
+ ol ul ol,
+ ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+ dd {
+  margin-left: 0;
+}
+
+ code {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+ pre {
+  margin-top: 0;
+  margin-bottom: 0;
+  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+ .select::-ms-expand {
+  opacity: 0;
+}
+
+>*:first-child {
+  margin-top: 0 !important;
+}
+
+>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+ a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+ .anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+
+ .anchor:focus {
+  outline: none;
+}
+
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6 {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+ h1:hover .anchor,
+ h2:hover .anchor,
+ h3:hover .anchor,
+ h4:hover .anchor,
+ h5:hover .anchor,
+ h6:hover .anchor {
+  padding-left: 8px;
+  margin-left: -30px;
+  text-decoration: none;
+}
+
+ h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+ h1 .anchor {
+  line-height: 1;
+}
+
+ h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+ h2 .anchor {
+  line-height: 1;
+}
+
+ h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+ h3 .anchor {
+  line-height: 1.2;
+}
+
+ h4 {
+  font-size: 1.25em;
+}
+
+ h4 .anchor {
+  line-height: 1.2;
+}
+
+ h5 {
+  font-size: 1em;
+}
+
+ h5 .anchor {
+  line-height: 1.1;
+}
+
+ h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+ h6 .anchor {
+  line-height: 1.1;
+}
+
+ p,
+ blockquote,
+ ul,
+ ol,
+ dl,
+ table,
+ pre {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+ hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+ ul,
+ ol {
+  padding-left: 2em;
+}
+
+ ul ul,
+ ul ol,
+ ol ol,
+ ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ li>p {
+  margin-top: 16px;
+}
+
+ dl {
+  padding: 0;
+}
+
+ dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+ dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+ blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+ blockquote>:first-child {
+  margin-top: 0;
+}
+
+ blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+ table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+ table th {
+  font-weight: bold;
+}
+
+ table th,
+ table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+ table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+ table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+ img {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+ code {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+ code:before,
+ code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+ pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+ .highlight {
+  margin-bottom: 16px;
+}
+
+ .highlight pre,
+ pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+ .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+ pre {
+  word-wrap: normal;
+}
+
+ pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+ pre code:before,
+ pre code:after {
+  content: normal;
+}
+
+ kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
+}
+
+ .pl-c {
+  color: #969896;
+}
+
+ .pl-c1,
+ .pl-s .pl-v {
+  color: #0086b3;
+}
+
+ .pl-e,
+ .pl-en {
+  color: #795da3;
+}
+
+ .pl-s .pl-s1,
+ .pl-smi {
+  color: #333;
+}
+
+ .pl-ent {
+  color: #63a35c;
+}
+
+ .pl-k {
+  color: #a71d5d;
+}
+
+ .pl-pds,
+ .pl-s,
+ .pl-s .pl-pse .pl-s1,
+ .pl-sr,
+ .pl-sr .pl-cce,
+ .pl-sr .pl-sra,
+ .pl-sr .pl-sre {
+  color: #183691;
+}
+
+ .pl-v {
+  color: #ed6a43;
+}
+
+ .pl-id {
+  color: #b52a1d;
+}
+
+ .pl-ii {
+  background-color: #b52a1d;
+  color: #f8f8f8;
+}
+
+ .pl-sr .pl-cce {
+  color: #63a35c;
+  font-weight: bold;
+}
+
+ .pl-ml {
+  color: #693a17;
+}
+
+ .pl-mh,
+ .pl-mh .pl-en,
+ .pl-ms {
+  color: #1d3e81;
+  font-weight: bold;
+}
+
+ .pl-mq {
+  color: #008080;
+}
+
+ .pl-mi {
+  color: #333;
+  font-style: italic;
+}
+
+ .pl-mb {
+  color: #333;
+  font-weight: bold;
+}
+
+ .pl-md {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+ .pl-mi1 {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+ .pl-mdr {
+  color: #795da3;
+  font-weight: bold;
+}
+
+ .pl-mo {
+  color: #1d3e81;
+}
+
+ kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
+}
+
+ .task-list-item {
+  list-style-type: none;
+}
+
+ .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+ .task-list-item input {
+  margin: 0 0.35em 0.25em -1.6em;
+  vertical-align: middle;
+}
+
+ :checked+.radio-label {
+  z-index: 1;
+  position: relative;
+  border-color: #4078c0;
+}
+  </style>
+</head>
+<body>
+    <a name="Sortfile"></a>
+<h1>Sortfile</h1>
+
+<p>This code is for the following task: sort a textfile according to the last
+number in each line. This challenge was given student applicants by friends
+and I took it to develop a program in C with some attention to performance.</p>
+
+<a name="Compiling"></a>
+<h2>Compiling</h2>
+
+<p>To compile this code, use a Makefile that can be extracted from this file
+using</p>
+
+<pre><code>    lipsum tangle Makefile sortlines.lp &gt; Makefile
+    make
+
+&lt;&lt;Makefile&gt;&gt;=
+all: sortlines
+
+sortlines.c: sortlines.lp
+    lipsum tangle -f cpp $@ $&lt; &gt; $@
+
+sortlines: sortlines.c
+    gcc -O -o $@ $&lt;
+</code></pre>
+
+<a name="Types-and-Main-Function"></a>
+<h2>Types and Main Function</h2>
+
+<p>The idea is to read the file into memory, to build up an array of pointers
+to each line in the file, to sort the array, and finally to emit the lines
+in sorting order using the sorted array.</p>
+
+<pre><code>&lt;&lt;sortlines.c&gt;&gt;=
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;ctype.h&gt;
+
+&lt;&lt;type definitions&gt;&gt;
+&lt;&lt;read file into memory&gt;&gt;
+&lt;&lt;scan lines&gt;&gt;
+&lt;&lt;sort predicate cmp&gt;&gt;
+&lt;&lt;main function&gt;&gt;
+</code></pre>
+
+<p>Possible challenges include multiple numbers in a line and trying to avoid
+to scan a line multiple times for the detection of the last number in it.</p>
+
+<p>The key data structure is <code>LINE</code>. It contains a pointer into the file, the
+length of the line and an <code>int n</code> for the value of the last number in that
+line.</p>
+
+<pre><code>&lt;&lt;type definitions&gt;&gt;=
+typedef struct line {
+    char *line; /* byte sequence */
+    int length;
+    int  n; /* sort key */
+} LINE;      
+</code></pre>
+
+<p>The sort predicate on lines is defined by <code>cmp</code>. It derives an integer by
+subtracting the numbers belonging to the two lines being compared. The sign
+of the integer signals the order to the sort function.</p>
+
+<pre><code>&lt;&lt;sort predicate cmp&gt;&gt;=
+static int cmp(const LINE *x, const LINE *y)
+{
+    return x-&gt;n - y-&gt;n;
+}
+</code></pre>
+
+<p>The main function reads the file into memory, scans it into lines, sorts
+the lines, and emits them.</p>
+
+<pre><code>&lt;&lt;main function&gt;&gt;=
+int main (int argc, const char * argv[]) 
+{
+    int n,l;
+    LINE *lines;
+    char *buffer;
+        long bufsize;
+
+    if (argc != 2) {
+        fprintf(stderr,"usage: %s file\n",argv[0]);
+        return 1;
+    }
+
+    buffer = readfile(argv[1], &amp;bufsize);
+    if (!buffer)
+        return 1;
+    if (!bufsize)
+        return 0; /* file empty */
+
+    lines = scan_buffer(&amp;n, buffer, bufsize);
+    if (!lines) {
+        perror("can't allocate");
+        return 1;
+    }
+
+    /* sort line array and emit each line to stdout */
+    mergesort(lines, n, sizeof(LINE), 
+        (int (*)(const void *, const void *))cmp);
+    for (l=0; l&lt;n; l++)
+        fwrite(lines[l].line, lines[l].length, 1, stdout);
+
+    free(lines);
+    free(buffer);
+    return 0;
+}
+</code></pre>
+
+<a name="Reading-a-file-into-memory"></a>
+<h2>Reading a file into memory</h2>
+
+<p>Reading a file into memory requires to allocate the right amount of memory.
+We actually allocate one more byte and add a newline if the last line does not
+end with a newline already. This makes line scanning more regular. Otherwise
+we have to pay attention to errors as not being able to read the file or
+running out of memory.</p>
+
+<p>Function <code>readfile</code> returns a buffer allocated for the file and writes the
+size of the buffer to <code>bufsize</code>.</p>
+
+<pre><code>&lt;&lt;read file into memory&gt;&gt;=
+static char *readfile(const char *name, long *bufsize)
+{
+    long size, read;
+    char *buffer;
+    FILE *file;
+
+    file = fopen(name, "rb");
+    if (!file) {
+        perror("can't open file");
+        return NULL;
+    }
+
+    fseek(file, 0, SEEK_END);
+    size = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    /* we allocate one more byte that we might fill with \n */
+    buffer = malloc(size+1);
+    if (!buffer) {
+        perror("can't allocate memory");
+        return NULL;
+    } 
+    read = fread(buffer, 1, size, file);
+    if (read != size) {
+        perror("reading from file failed");
+        return NULL;
+    }
+    fclose(file);
+
+    /* if the last character in the file is not a \n we add it */
+    if (*(buffer+size-1) != '\n') {
+        *(buffer+size) = '\n';
+        size++;
+    }
+
+    *bufsize = size;
+    return buffer;
+}
+</code></pre>
+
+<a name="Parsing-a-buffer-into-lines"></a>
+<h2>Parsing a buffer into lines</h2>
+
+<p>The <code>scan_buffer</code> routine scans the buffer byte by byte and each line it finds
+it adds to a <code>LINE</code> struct. Since we can&rsquo;t know the number of lines, an
+initial number <code>m</code> is guessed. When it is exceeded, <code>2*m</code> are
+allocated (and again doubling if necessary).</p>
+
+<p>The tricky bit is to recognize the last number (and sort key) in a line and
+entering it into the <code>LINE</code> struct. Rather than relying to <code>atoi(3)</code> I&rsquo;m using
+a small hack <code>C2I</code> that computes the value of a single digit and from there
+computes the number when we find more digits.</p>
+
+<p>When we find a new number we never know wether it is the last number in a
+line. Hence we read it but overwrite any previous result. The <code>outside</code> flag
+is true, if we are outside a sequence of digits and if so we can go a little
+faster.</p>
+
+<p>We don&rsquo;t recognize negative numbers.</p>
+
+<pre><code>&lt;&lt;scan lines&gt;&gt;=
+#define C2I(c) ((c - '0'))        
+
+LINE *scan_buffer(int *n, char *buffer, long bufsize) 
+
+{
+    char *c = buffer;
+    char *line = buffer;
+    int outside = 1; /* true iff outside of digits sequence */
+    int number = -1; /* last number we read */
+
+    int m = 100 + bufsize/40; /* max number of lines we can store */
+    LINE *lines = malloc(m*sizeof(LINE));
+    if (!lines) {
+        return NULL;
+    }
+    *n = 0; /* number of lines read */
+    LINE *l = lines; /* current line */
+
+
+    while(c &lt; buffer+bufsize) {
+        switch (*c) {
+            case '\n':
+                /* store line */
+                l-&gt;line   = line;
+                l-&gt;n      = number;
+                l-&gt;length = c-line+1;
+                (*n)++;
+
+                /* prepare for next line */
+                number = -1;
+                outside = 1;
+                l++;
+                c++;
+                line = c;
+
+                /* make room for more lines to store */
+                if (*n == m) {
+                    lines = realloc(lines, 2*m*sizeof(LINE));
+                    if (!lines) {
+                        return NULL;
+                    }
+                    m *= 2;
+                    l = &amp;lines[*n];
+                }
+
+                break;
+
+            case '0': /* scan a number */
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                if (outside) {
+                    number = C2I(*c);
+                    /* we are inside a digit sequence now */
+                    outside = 0; 
+                } else {
+                    number = number * 10 + C2I(*c);
+                }
+                c++;
+                break;
+            default:
+                outside = 1; /* outside a digit sequence */
+                c++;
+                break;
+        }
+    }
+    return lines;
+}
+</code></pre>
+
+</body>
+</html>

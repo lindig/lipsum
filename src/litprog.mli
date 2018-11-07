@@ -1,8 +1,11 @@
 (** This module implements a representation for a literate program which
     is a sequence of documentation and named code chunks. *)
 
-exception NoSuchChunk of string (** a requested code chunk doesn't exist *)
-exception Cycle of string       (** code chunks refers to itself *)
+(** a requested code chunk doesn't exist *)
+exception NoSuchChunk of string 
+
+(** code chunks refers to itself *)
+exception Cycle of string       
 
 type code =
   | Str of Tangle.position * string

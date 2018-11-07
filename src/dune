@@ -1,0 +1,10 @@
+
+(executable
+ (name main)
+  (public_name lipsum)
+  (libraries
+   cmdliner re.glob))
+
+(ocamlyacc parser)
+
+(ocamllex scanner escape)

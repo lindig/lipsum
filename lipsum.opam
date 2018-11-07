@@ -1,19 +1,28 @@
-# vim: set et:
-#
-
-opam-version:   "1.2"
-name:           "lipsum"
-version:        "0.3"
-maintainer:     "Christian Lindig <lindig@gmail.com>"
-authors:        "Christian Lindig <lindig@gmail.com>"
-homepage:       "https://github.com/lindig/lipsum"
-bug-reports:    "https://github.com/lindig/lipsum/issues"
-license:        "BSD"
-dev-repo:       "https://github.com/lindig/lipsum.git"
-build: [
-  ["jbuilder" "build" "-j" jobs "@install"]
-]
+opam-version: "2.0"
+name: "lipsum"
+synopsis: "Self-contained tool for literate programming in tradition of NoWeb"
+maintainer: "Christian Lindig <lindig@gmail.com>"
+authors: "Christian Lindig <lindig@gmail.com>"
+license: "BSD"
+homepage: "https://github.com/lindig/lipsum"
+bug-reports: "https://github.com/lindig/lipsum/issues"
 depends: [
-  "jbuilder"    {build}
+  "ocaml"
+  "dune" {build}
   "re"
 ]
+doc: "https://lindig.github.io/lipsum/"
+build: ["dune" "build" "-p" "-j" jobs]
+dev-repo: "git+https://github.com/lindig/lipsum.git"
+description: """
+Lipsum is a command-line utility for literate programming. It stands in
+the tradition of [Noweb](http://www.cs.tufts.edu/~nr/noweb/), a popular
+and flexible literate programming system by Norman Ramsey. The idea of
+literate programming is to keep documentation for programmers and
+program code in one file and to arrange it in a way that helps
+understanding it best. To actually compile or run the code it needs to
+be extracted from the literate program and Lipsum is a tool to do this.
+
+Like Noweb, Lipsum employs a minimal markup to arrange documentation and
+code in a file. Also like Noweb, Lipsum is language agnostic and can be
+used for almost any programming language and documentation."""

@@ -18,7 +18,7 @@ let fprintf = Printf.fprintf
 let escaped = String.escaped
 let (@@) f x = f x
 
-let plain io pos str =
+let plain io _pos str =
   output_string io str
 
 let cpp io pos str =
